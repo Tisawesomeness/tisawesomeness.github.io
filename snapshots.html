@@ -1,0 +1,19 @@
+---
+layout: default
+title:  "Minecraft Snapshot Reverse Engineering"
+---
+
+<h1>Title</h1>
+Lorem ipsum
+
+<h2>Snapshot Posts</h2>
+{% for post in site.categories["snapshots"] %}
+  <h3>
+    <a href="{{ post.url }}">{{ post.title }}</a>
+    &ensp;
+    <small><time datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date_to_string }}</time></small>
+  </h3>
+  {{ post.excerpt }}
+{% endfor %}
+
+

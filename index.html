@@ -3,31 +3,25 @@ layout: default
 title: Home
 ---
 
-<div class="posts">
-  {% for post in paginator.posts %}
-  <article class="post">
-    <h1 class="post-title">
-      <a href="{{ post.url | relative_url }}">
-        {{ post.title }}
-      </a>
-    </h1>
+<h1>Hello!</h1>
+Lorem ipsum
 
-    <time datetime="{{ post.date | date_to_xmlschema }}" class="post-date">{{ post.date | date_to_string }}</time>
-
-    {{ post.content }}
-  </article>
+<h2>Recent Posts</h2>
+<ul>
+  {% for post in site.posts limit:3 %}
+    <li>
+      <a href="{{ post.url }}">{{ post.title }}</a>
+    </li>
   {% endfor %}
-</div>
+  {% assign post_size = site.posts | size %}
+  {% if post_size == 0 %}
+    <li>
+      None so far...
+    </li>
+  {% elsif post_size > 3 %}
+    <li>
+      <a href="/archive">More...</a>
+    </li>
+  {% endif %}
+</ul>
 
-<div class="pagination">
-  {% if paginator.next_page %}
-    <a class="pagination-item older" href="{{ paginator.next_page_path | relative_url }}">Older</a>
-  {% else %}
-    <span class="pagination-item older">Older</span>
-  {% endif %}
-  {% if paginator.previous_page %}
-    <a class="pagination-item newer" href="{{ paginator.previous_page_path | prepend: relative_url }}">Newer</a>
-  {% else %}
-    <span class="pagination-item newer">Newer</span>
-  {% endif %}
-</div>

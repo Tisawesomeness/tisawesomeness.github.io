@@ -22,10 +22,16 @@
 
       <footer class="footer">
         <small>
+          {% comment %}
           &copy;
           <time datetime="{{ site.time | date_to_xmlschema }}"
             >{{ site.time | date: '%Y' }}</time
           >. All rights reserved.
+          <br>
+          {% endcomment %}
+          "Minecraft" is a trademark of Mojang Synergies AB.
+          &middot;
+          Not affiliated with Mojang.
         </small>
       </footer>
     </div>

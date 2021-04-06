@@ -2,24 +2,70 @@
 layout: default
 ---
 
+<style>
+.row {
+  display: flex;
+}
+.column {
+  flex: 50%;
+}
+</style>
+
 <article class="post">
   <h1 class="post-title">{{ page.title }}</h1>
   <time datetime="{{ page.date | date_to_xmlschema }}" class="post-date">{{ page.date | date_to_string }}</time>
   {{ content }}
 </article>
 
-{% if site.related_posts != empty %}
-<aside class="related">
-  <h3>Related posts</h3>
-  <ul class="related-posts">
-    {% for post in site.related_posts limit:3 %}
-      <li>
-        <a href="{{ site.baseurl }}{{ post.url }}">
-          {{ post.title }}
-          <small><time datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date_to_string }}</time></small>
-        </a>
-      </li>
-    {% endfor %}
-  </ul>
-</aside>
+<aside>
+{% if page.categories %}
+  {% comment %} https://github.com/jekyll/jekyll/issues/260 {% endcomment %}
+  {% assign category = page.categories[0] %}
+  {% assign posts = site.categories[category] %}
+  {% for post in posts %}
+    {% if post.url == page.url %}
+      {% assign post_index0 = forloop.index0 %}
+      {% assign post_index1 = forloop.index %}
+    {% endif %}
+  {% endfor %}
+  {% for post in posts %}
+    {% if post_index0 == forloop.index %}
+      {% assign next_post = post %}
+    {% endif %}
+    {% if post_index1 == forloop.index0 %}
+      {% assign prev_post = post %}
+    {% endif %}
+  {% endfor %}
+  
+  {% if prev_post or next_post %}
+    <div class="row">
+      <div class="column">
+        <h3>Previous</h3>
+        {% if prev_post %}
+          <a href="{{ site.baseurl }}{{ prev_post.url }}">{{ prev_post.title }}</a>
+          &ensp;
+          <small><time datetime="{{ prev_post.date | date_to_xmlschema }}">{{ prev_post.date | date_to_string }}</time></small>
+        {% else %}
+          <a href="{{ site.url }}">Home</a>
+        {% endif %}
+      </div>
+      <div class="column">
+        <h3>Next</h3>
+        {% if next_post %}
+          <a href="{{ site.baseurl }}{{ next_post.url }}">{{ next_post.title }}</a>
+          &ensp;
+          <small><time datetime="{{ next_post.date | date_to_xmlschema }}">{{ next_post.date | date_to_string }}</time></small>
+        {% else %}
+          <a href="{{ site.url }}">Home</a>
+        {% endif %}
+      </div>
+    </div>
+  {% endif %}
 {% endif %}
+
+{% if page.categories[0] == "snapshots" %}
+  <h3>Feed</h3>
+  Subscribe <a href="{{ site.url }}/snapshot_feed.xml"> via RSS</a>
+{% endif %}
+</aside>
+
