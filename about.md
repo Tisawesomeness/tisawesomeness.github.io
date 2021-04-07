@@ -3,5 +3,5 @@ layout: page
 title: About
 ---
 
-Hello!
+I'll put something here Soon™
 

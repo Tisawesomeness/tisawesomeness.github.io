@@ -3,8 +3,21 @@ layout: default
 title:  "Minecraft Snapshot Reverse Engineering"
 ---
 
-<h1>Title</h1>
-Lorem ipsum
+<h1>Minecraft Snapshot Reverse Engineering</h1>
+This is where I post my findings from looking at the source code for every new Minecraft snapshot. You can usually expect a post within 1-2 days of the snapshot releasing.
+
+<h2>Notes</h2>
+<p>
+  I will not try to reverse engineer features that will change a lot, such as ore distribution. If you want me to cover a specific feature or find out how something works, DM me on Discord at <code>Tis_awesomeness#8617</code>.
+</p>
+<p>
+  I will be adding posts for earlier snapshots until all of them are finished, so check back every once in a while for new posts.
+</p>
+
+<h2>How can I do this?</h2>
+Download <a href="https://github.com/hube12/DecompilerMC">DecompilerMC</a> and run <code>python main.py -mcv snap -s server</code> to decompile and map the latest snapshot. Then open the source code in your favorite editor (I recommend IntelliJ) and start looking around.
+
+<hr>
 
 <h2>Snapshot Posts</h2>
 {% for post in site.categories["snapshots"] %}
