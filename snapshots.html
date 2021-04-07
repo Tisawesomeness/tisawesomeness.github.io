@@ -15,12 +15,13 @@ This is where I post my findings from looking at the source code for every new M
 </p>
 
 <h2>How can I do this?</h2>
-Download <a href="https://github.com/hube12/DecompilerMC">DecompilerMC</a> and run <code>python main.py -mcv snap -s server</code> to decompile and map the latest snapshot. Then open the source code in your favorite editor (I recommend IntelliJ) and start looking around.
+Download <a href="https://github.com/hube12/DecompilerMC">DecompilerMC</a> and run <code>python main.py -c -mcv snap -s server</code> to decompile and map the latest snapshot. Then open the source code in your favorite editor (I recommend IntelliJ) and start looking around.
 
 <hr>
 
 <h2>Snapshot Posts</h2>
-{% for post in site.categories["snapshots"] %}
+<small>Subscribe <a href="{{ site.url }}/snapshot_feed.xml"> via RSS</a>
+{% for post in site.categories["snapshots"] %}</small>
   <h3>
     <a href="{{ post.url }}">{{ post.title }}</a>
     &ensp;

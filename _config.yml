@@ -3,7 +3,10 @@ title: Tis
 url: https://tisawesomeness.github.io
 paginate: 1
 baseurl: ""
-permalink: pretty
+permalink: /:categories/:title
+timezone: America/New_York
+# jekyll doesn't understand that 11:30 is before 11:40 for some reason
+future: true
 
 # Gems
 plugins:
