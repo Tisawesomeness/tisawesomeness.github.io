@@ -1,6 +1,7 @@
 ---
 layout: default
 title: Advent of Code 2020 Stats
+description: "Personal stats for Advent of Code 2020"
 ---
 
 # Advent of Code 2020 Stats

@@ -1,6 +1,7 @@
 ---
 layout: default
 title: Archive
+description: "Browse all posts by month and year"
 ---
 
 # Archive

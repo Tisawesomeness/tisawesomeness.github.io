@@ -1,6 +1,7 @@
 ---
 layout: page
 title: About
+description: "About Tis_awesomeness, the creator of this website"
 ---
 
 My name Tis_awesomeness, but you can call me **Tis**. You may see me occasionally in the technical Minecraft and Discord developer communities. I'm a fan of open source everything, so all my projects are open source if possible.
