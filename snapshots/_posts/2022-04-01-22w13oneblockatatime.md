@@ -8,13 +8,21 @@ This snapshot may be a joke, but the automation and speedrunning potential is no
 
 # Advanced Yeet Techniques
 
+Yeet a block upwards and let it land on your head to put that block on your head.
+
+Having a snow or ice-type block on your head will make you freeze.
+
 Throwing a carved pumpkin or barrel onto a mob will put that block on the mob's head. Throwing a cactus onto an entity with a pumpkin head will shear the pumpkin.
 
 Throwing cactus or pointed dripstone will shear sheep. Throwing wool onto a sheep will change the sheep's color.
 
+Throwing an item into fire or lava will smelt it.
+
 Holding a chicken will make the player fall slowly.
 
-Holding bees and parrots will let players "fly".
+Holding a bee will let players "fly".
+
+Holding a pig will let players stick to ceilings (the pig is upside-down).
 
 Holding a magma cube will make the player immune to fire.
 
@@ -58,17 +66,31 @@ If you destroy all end crystals then punch the dragon, **you can ride the ender 
 
 # nothing to see here move along
 
-The game has an intro jingle at `nothingtoseeheremovealong:awesome_intro` that sounds **SUS**piciously like the SEGA jingle.
+The game has an intro jingle at `nothingtoseeheremovealong:awesome_intro` that sounds **sus**piciously like the SEGA jingle.
 
 The `nothingtoseeheremovealong:ooof` sound plays when a mob steals an item from you or an enderman trades its held block with you by attacking you.
 
 # Other
 
+Wolves named "Mars" have a unique texture.
+
 Players named "Ulraf" can eat bamboo, which has the properties of an enchanted golden apple.
 
 Skeletons and similar mobs have perfect accuracy when wearing 2 spyglasses.
 
+Stone, end stone, and deepslate can turn into stairs/bricks/walls/slabs when destroyed with an explosion.
+
+The mood in the debug screen was changed to "Number of ghosts in world".
+
+All splash texts were replaced with variations of "One block at a time!".
+
 `placeSpecificStateBecauseCodeQualityIsNotImportant` and `hotBlocksInYourArea` are now function names that exist.
 
 Update suppression added back (just kidding).
+
+# Edits
+
+## April 1 2022
+
+- Various changes
 
