@@ -36,5 +36,27 @@ Contact me at [tis_dev@protonmail.com](mailto:tis_dev@protonmail.com).
 
 ## Opt-out of website tracking
 
-<iframe onload='javascript:(function(o){o.style.height=o.contentWindow.document.body.scrollHeight+"px";}(this));' style="width:100%;border:none;overflow:hidden;" src="https://matomo.tis.codes/index.php?module=CoreAdminHome&action=optOut&language=en&backgroundColor=1e1f20&fontColor=ffffff&fontSize=20px&fontFamily=Arial"></iframe>
+<script>
+    var loaded = false;
+    window.addEventListener("message", e => {
+        if (e.origin === "https://tis.codes" && e.data === "loaded") {
+            loaded = true;
+            document.getElementById("optOutLoading").style.display = "none";
+        }
+    }, false);
+    window.setTimeout(function() {
+        if (!loaded) {
+            document.getElementById("optOutFrame").style.display = "none";
+            document.getElementById("optOutLoading").style.display = "none";
+            document.getElementById("optOutError").style.display = "";
+        }
+    }, 5000);
+</script>
+<div id="optOutLoading">
+    <p>Loading...</p>
+</div>
+<div id="optOutError" style="display:none">
+    <p>The opt-out iframe failed to load. If it was blocked by an ad-blocker, you are not being tracked and do not need to opt-out.</p>
+</div>
+<iframe id="optOutFrame" onload='javascript:window.parent.postMessage("loaded", "https://tis.codes");' style="width:100%;border:none;overflow:hidden;" src="https://matomo.tis.codes/index.php?module=CoreAdminHome&action=optOut&language=en&backgroundColor=1e1f20&fontColor=ffffff&fontSize=20px&fontFamily=Arial"></iframe>
 
