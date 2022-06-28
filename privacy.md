@@ -16,7 +16,7 @@ This website does not collect any personally identifiable information (PII). Mat
 - Date and time of visit
 - Title of the page being visited
 - URL of the page being visited
-- URL of the page that was viewed prior to the current page (query parameters stripped)
+- URL of the page that was viewed prior to the current page
 - Screen resolution
 - Time in local timezone
 - Files that were clicked and downloaded
@@ -41,7 +41,9 @@ Contact me at [tis_dev@protonmail.com](mailto:tis_dev@protonmail.com).
     window.addEventListener("message", e => {
         if (e.origin === "https://tis.codes" && e.data === "loaded") {
             loaded = true;
+            document.getElementById("optOutFrame").style.display = "";
             document.getElementById("optOutLoading").style.display = "none";
+            document.getElementById("optOutError").style.display = "none";
         }
     }, false);
     window.setTimeout(function() {
