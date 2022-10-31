@@ -10,7 +10,7 @@ I'm a developer and college student from North Carolina, and an [FRC](https://ww
 
 # Advent of Code
 
-I completed [Advent of Code](https://adventofcode.com/) for 2017, 2020, and 2021. Check out my [2020 stats](/advent).
+I completed [Advent of Code](https://adventofcode.com/) for 2017, 2020, and 2021. Check out my [stats](/advent).
 
 # Contact
 
