@@ -1,0 +1,257 @@
+[
+    {
+        "old_uuid": "736565d2-e1a7-403d-a3f8-1aeb3e302542",
+        "old_name": "Creative block interaction range modifier",
+        "new_id": "creative_mode_block_range"
+    },
+    {
+        "old_uuid": "98491ef6-97b1-4584-ae82-71a8cc85cf73",
+        "old_name": "Creative entity interaction range modifier",
+        "new_id": "creative_mode_entity_range"
+    },
+    {
+        "old_uuid": "91aeaa56-376b-4498-935b-2f7f68070635",
+        "old_name": "effect.minecraft.speed",
+        "new_id": "effect.speed"
+    },
+    {
+        "old_uuid": "7107de5e-7ce8-4030-940e-514c1f160890",
+        "old_name": "effect.minecraft.slowness",
+        "new_id": "effect.slowness"
+    },
+    {
+        "old_uuid": "af8b6e3f-3328-4c0a-aa36-5ba2bb9dbef3",
+        "old_name": "effect.minecraft.haste",
+        "new_id": "effect.haste"
+    },
+    {
+        "old_uuid": "55fced67-e92a-486e-9800-b47f202c4386",
+        "old_name": "effect.minecraft.mining_fatigue",
+        "new_id": "effect.mining_fatigue"
+    },
+    {
+        "old_uuid": "648d7064-6a60-4f59-8abe-c2c23a6dd7a9",
+        "old_name": "effect.minecraft.strength",
+        "new_id": "effect.strength"
+    },
+    {
+        "old_uuid": "c0105bf3-aef8-46b0-9ebc-92943757ccbe",
+        "old_name": "effect.minecraft.jump_boost",
+        "new_id": "effect.jump_boost"
+    },
+    {
+        "old_uuid": "22653b89-116e-49dc-9b6b-9971489b5be5",
+        "old_name": "effect.minecraft.weakness",
+        "new_id": "effect.weakness"
+    },
+    {
+        "old_uuid": "5d6f0ba2-1186-46ac-b896-c61c5cee99cc",
+        "old_name": "effect.minecraft.health_boost",
+        "new_id": "effect.health_boost"
+    },
+    {
+        "old_uuid": "eae29cf0-701e-4ed6-883a-96f798f3dab5",
+        "old_name": "effect.minecraft.absorption",
+        "new_id": "effect.absorption"
+    },
+    {
+        "old_uuid": "03c3c89d-7037-4b42-869f-b146bcb64d2e",
+        "old_name": "effect.minecraft.luck",
+        "new_id": "effect.luck"
+    },
+    {
+        "old_uuid": "cc5af142-2bd2-4215-b636-2605aed11727",
+        "old_name": "effect.minecraft.unluck",
+        "new_id": "effect.unluck"
+    },
+    {
+        "old_uuid": "6555be74-63b3-41f1-a245-77833b3c2562",
+        "old_name": "Evil rabbit strength",
+        "new_id": "evil"
+    },
+    {
+        "old_uuid": "1eaf83ff-7207-4596-b37a-d7a07b3ec4ce",
+        "old_name": "Powder snow slow",
+        "new_id": "powder_snow"
+    },
+    {
+        "old_uuid": "662a6b8d-da3e-4c1c-8813-96ea6097278d",
+        "old_name": "Sprinting speed boost",
+        "new_id": "sprinting"
+    },
+    {
+        "old_uuid": "020e0dfb-87ae-4653-9556-831010e291a0",
+        "old_name": "Attacking speed boost",
+        "new_id": "attacking"
+    },
+    {
+        "old_uuid": "49455a49-7ec5-45ba-b886-3b90b23a1718",
+        "old_name": "Attacking speed boost",
+        "new_id": "attacking"
+    },
+    {
+        "old_uuid": "766bfa64-11f3-11ea-8d71-362b9e155667",
+        "old_name": "Baby speed boost",
+        "new_id": "baby"
+    },
+    {
+        "old_uuid": "b9766b59-9566-4402-bc1f-2ee2a276d836",
+        "old_name": "Baby speed boost",
+        "new_id": "baby"
+    },
+    {
+        "old_uuid": "7e0292f2-9434-48d5-a29f-9583af7df27f",
+        "old_name": "Covered armor bonus",
+        "new_id": "covered"
+    },
+    {
+        "old_uuid": "9e362924-01de-4ddd-a2b2-d0f7a405a174",
+        "old_name": "Strider suffocating modifier",
+        "new_id": "suffocating"
+    },
+    {
+        "old_uuid": "5cd17e52-a79a-43d3-a529-90fde04b181e",
+        "old_name": "Drinking speed penalty",
+        "new_id": "drinking"
+    },
+    {
+        "old_uuid": "845db27c-c624-495f-8c9f-6020a9a58b6b",
+        "old_name": "Armor modifier",
+        "new_id": "armor.boots"
+    },
+    {
+        "old_uuid": "d8499b04-0e66-4726-ab29-64469d734e0d",
+        "old_name": "Armor modifier",
+        "new_id": "armor.leggings"
+    },
+    {
+        "old_uuid": "9f3d476d-c118-4544-8365-64846904b48e",
+        "old_name": "Armor modifier",
+        "new_id": "armor.chestplate"
+    },
+    {
+        "old_uuid": "2ad3f246-fee1-4e67-b886-69fd380bb150",
+        "old_name": "Armor modifier",
+        "new_id": "armor.helmet"
+    },
+    {
+        "old_uuid": "c1c72771-8b8e-ba4a-ace0-81a93c8928b2",
+        "old_name": "Armor modifier",
+        "new_id": "armor.body"
+    },
+    {
+        "old_uuid": "845db27c-c624-495f-8c9f-6020a9a58b6b",
+        "old_name": "Armor toughness",
+        "new_id": "armor.boots"
+    },
+    {
+        "old_uuid": "d8499b04-0e66-4726-ab29-64469d734e0d",
+        "old_name": "Armor toughness",
+        "new_id": "armor.leggings"
+    },
+    {
+        "old_uuid": "9f3d476d-c118-4544-8365-64846904b48e",
+        "old_name": "Armor toughness",
+        "new_id": "armor.chestplate"
+    },
+    {
+        "old_uuid": "2ad3f246-fee1-4e67-b886-69fd380bb150",
+        "old_name": "Armor toughness",
+        "new_id": "armor.helmet"
+    },
+    {
+        "old_uuid": "c1c72771-8b8e-ba4a-ace0-81a93c8928b2",
+        "old_name": "Armor toughness",
+        "new_id": "armor.body"
+    },
+    {
+        "old_uuid": "b572ecd2-ac0c-4071-abde-9594af072a37",
+        "old_name": "enchantment.fire_protection",
+        "new_id": "enchantment.fire_protection"
+    },
+    {
+        "old_uuid": "40a9968f-5c66-4e2f-b7f4-2ec2f4b3e450",
+        "old_name": "enchantment.blast_protection",
+        "new_id": "enchantment.blast_protection"
+    },
+    {
+        "old_uuid": "07a65791-f64d-4e79-86c7-f83932f007ec",
+        "old_name": "enchantment.respiration",
+        "new_id": "enchantment.respiration"
+    },
+    {
+        "old_uuid": "60b1b7db-fffd-4ad0-817c-d6c6a93d8a45",
+        "old_name": "enchantment.aqua_affinity",
+        "new_id": "enchantment.aqua_affinity"
+    },
+    {
+        "old_uuid": "11dc269a-4476-46c0-aff3-9e17d7eb6801",
+        "old_name": "enchantment.depth_strider",
+        "new_id": "enchantment.depth_strider"
+    },
+    {
+        "old_uuid": "87f46a96-686f-4796-b035-22e16ee9e038",
+        "old_name": "Soul speed boost",
+        "new_id": "enchantment.soul_speed"
+    },
+    {
+        "old_uuid": "b9716dbd-50df-4080-850e-70347d24e687",
+        "old_name": "Soul speed movement efficiency",
+        "new_id": "enchantment.soul_speed"
+    },
+    {
+        "old_uuid": "92437d00-c3a7-4f2e-8f6c-1f21585d5dd0",
+        "old_name": "enchantment.swift_sneak",
+        "new_id": "enchantment.swift_sneak"
+    },
+    {
+        "old_uuid": "5d3d087b-debe-4037-b53e-d84f3ff51f17",
+        "old_name": "enchantment.sweeping_edge",
+        "new_id": "enchantment.sweeping_edge"
+    },
+    {
+        "old_uuid": "3ceb37c0-db62-46b5-bd02-785457b01d96",
+        "old_name": "enchantment.efficiency",
+        "new_id": "enchantment.efficiency"
+    },
+    {
+        "old_uuid": "cb3f55d3-645c-4f38-a497-9c13a33db5cf",
+        "old_name": "Weapon modifier",
+        "new_id": "base_attack_damage"
+    },
+    {
+        "old_uuid": "fa233e1c-4180-4865-b01b-bcce9785aca3",
+        "old_name": "Weapon modifier",
+        "new_id": "base_attack_speed"
+    },
+    {
+        "old_uuid": "cb3f55d3-645c-4f38-a497-9c13a33db5cf",
+        "old_name": "Tool modifier",
+        "new_id": "base_attack_damage"
+    },
+    {
+        "old_uuid": "fa233e1c-4180-4865-b01b-bcce9785aca3",
+        "old_name": "Tool modifier",
+        "new_id": "base_attack_speed"
+    },
+    {
+        "old_name": "Random spawn bonus",
+        "new_id": "random_spawn_bonus"
+    },
+    {
+        "old_name": "Random zombie-spawn bonus",
+        "new_id": "random_spawn_bonus"
+    },
+    {
+        "old_name": "Leader zombie bonus",
+        "new_id": "leader_zombie_bonus"
+    },
+    {
+        "old_name": "Zombie reinforcement callee charge",
+        "new_id": "reinforcement_callee_charge"
+    },
+    {
+        "old_name": "Zombie reinforcement caller charge",
+        "new_id": "reinforcement_caller_charge"
+    }
+]
