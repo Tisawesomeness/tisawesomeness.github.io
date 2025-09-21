@@ -35,8 +35,11 @@
 .post-date {
   display: block;
   margin-top: -.5rem;
-  margin-bottom: var(--spacer);
   color: var(--gray-600);
+}
+
+.post-spacer {
+  margin-bottom: var(--spacer);
 }
 
 
