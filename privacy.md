@@ -1,7 +1,6 @@
 ---
 layout: page
 title: Privacy
-description: "Website Privacy Info"
 ---
 
 This website uses [Matomo](https://matomo.org/), an open source, privacy-respecting web analytics platform. I use Matomo to analyze how users interact with the website, gauge interest, identify issues, and recognize and stop misuse.

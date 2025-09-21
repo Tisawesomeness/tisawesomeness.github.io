@@ -1,6 +1,8 @@
 // Custom
 //
-// Additional features added to Dark Poole theme, such as color previews
+// Additional features added to Dark Poole theme
+
+// Color previews
 
 .color-preview {
   display: inline-block;
@@ -12,3 +14,50 @@
   margin-right: -0.1em;
 }
 
+// Project boxes
+
+.project-box {
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: transform 0.2s;
+  background-color: --gray-900;
+  position: relative;
+  margin: 30px 0px;
+}
+
+.project-box:hover {
+  transform: scale(1.05);
+}
+
+.project-inner {
+  padding: 10px 20px 10px 20px;
+  margin: 10px 10px;
+}
+
+.project-header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.project-name {
+  text-align: center;
+  font-weight: bold;
+  flex: 1;
+}
+
+.project-github {
+  position: absolute;
+  right: 15px;
+  font-size: 1.5rem;
+}
+
+.project-image {
+  width: 100%;
+  margin: 0px;
+}
+
+.project-description {
+  text-align: center;
+}

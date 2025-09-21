@@ -13,6 +13,7 @@ plugins:
   - jekyll-gist
   - jekyll-paginate
   - jekyll-seo-tag
+  - kramdown
 
 # Optimize Jekyll
 exclude:
@@ -26,7 +27,7 @@ exclude:
 
 sass:
   sass_dir: _sass
-  style: :compressed
+  style: compressed
 
 # Specify the author for blog posts
 author:
@@ -43,8 +44,8 @@ nav:
   - title: Snapshots
     url: /snapshots
 
-  - title: Posts
-    url: /archive
+#  - title: Posts
+#    url: /archive
 
   - title: About
     url: /about
