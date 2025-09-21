@@ -11,5 +11,5 @@ title: About
 
 # Licensing
 
-The content of this website is licensed under the [CC-BY-SA 4.0 license](https://creativecommons.org/licenses/by-sa/4.0/) unless otherwise noted, and the underlying source code used to format and display the content is licensed under the [MIT license](LICENSE.md).
+The content of this website is licensed under the [CC-BY-NC-SA 4.0 license](https://creativecommons.org/licenses/by-nc-sa/4.0/) unless otherwise noted, and the underlying source code used to format and display the content is licensed under the [MIT license](LICENSE.md).
 
