@@ -1,12 +1,23 @@
 # Setup
-title: Tis
-url: https://tisawesomeness.github.io
 paginate: 1
 baseurl: ""
 permalink: /:categories/:title
+lang: en_US
 timezone: America/New_York
 # jekyll doesn't understand that 11:30 is before 11:40 for some reason
 future: true
+
+# SEO
+url: https://tisawesomeness.github.io
+title: Tis
+description: "You can call me Tis. Developer, sysadmin, technical Minecrafter."
+author:
+  name: Tis_awesomeness
+  url: https://github.com/Tisawesomeness
+  github: Tisawesomeness
+social:
+  links:
+    - https://bsky.app/profile/tis.codes
 
 # Gems
 plugins:
@@ -28,13 +39,6 @@ exclude:
 sass:
   sass_dir: _sass
   style: compressed
-
-# Specify the author for blog posts
-author:
-  name: Tis_awesomeness
-  url: https://github.com/Tisawesomeness
-#  email: markdotto@gmail.com
-  github: Tisawesomeness
 
 # Custom vars
 version: 3.0.0
