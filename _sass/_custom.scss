@@ -2,6 +2,44 @@
 //
 // Additional features added to Dark Poole theme
 
+// Details
+
+details {
+  border: 1px solid var(--border-color);
+  border-radius: 0.3em;
+  margin-bottom: 1em;
+  display: block;
+}
+
+details[open] {
+  padding: 0.5em;
+  padding-bottom: 0em;
+}
+
+details:not([open]) {
+  cursor: pointer;
+}
+
+summary {
+  display: list-item;
+  cursor: pointer;
+}
+
+details:not([open]) summary {
+  padding: 0.5em;
+}
+
+details[open] summary {
+  padding: 0.5em;
+  margin: -0.5em;
+  margin-bottom: 0.5em;
+  background-color: var(--gray-800);
+}
+
+details:not([open]):focus, details:not([open]):hover {
+  background-color: var(--gray-800);
+}
+
 // Color previews
 
 .color-preview {
