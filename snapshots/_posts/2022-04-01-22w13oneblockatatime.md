@@ -5,7 +5,7 @@ date: 2022-04-01 14:35:49 -0500
 changelog: "https://www.minecraft.net/en-us/article/mojang-studios-release-new-astonishing-update"
 ---
 
-This snapshot may be a joke, but the automation and speedrunning potential is not!.
+This snapshot may be a joke, but the automation and speedrunning potential is not!
 
 # Advanced Yeet Techniques
 
