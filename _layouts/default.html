@@ -31,11 +31,17 @@
           >. All rights reserved.
           <br>
           {% endcomment %}
+          {% if page.hytale %}
+          Not affiliated with Hytale or Hypixel Studios.
+          &middot;
+          All trademarks are property of their respective owners.
+          {% else %}
           "Minecraft" is a trademark of Mojang Synergies AB.
           &middot;
           Not affiliated with Mojang.
           &middot;
           <a href="/privacy">Privacy</a>
+          {% endif %}
         </small>
       </footer>
     </div>
