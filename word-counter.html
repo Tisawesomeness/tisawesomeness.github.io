@@ -358,13 +358,13 @@ title: "Word Counter"
                 break;
             case 'length-asc':
                 sortedWords = Object.keys(wordCounts).sort((a, b) => {
-                    const lengthDiff = a.length - b.length;
+                    const lengthDiff = lengthCountingBracketsAsOneCharacter(a) - lengthCountingBracketsAsOneCharacter(b);
                     return lengthDiff !== 0 ? lengthDiff : a.localeCompare(b);
                 });
                 break;
             case 'length-desc':
                 sortedWords = Object.keys(wordCounts).sort((a, b) => {
-                    const lengthDiff = b.length - a.length;
+                    const lengthDiff = lengthCountingBracketsAsOneCharacter(b) - lengthCountingBracketsAsOneCharacter(a);
                     return lengthDiff !== 0 ? lengthDiff : a.localeCompare(b);
                 });
                 break;
@@ -425,6 +425,26 @@ title: "Word Counter"
         `;
 
         resultsContainer.innerHTML = tableHTML;
+    }
+
+    function lengthCountingBracketsAsOneCharacter(str) {
+        let count = 0;
+        let inBrackets = false;
+
+        for (let i = 0; i < str.length; i++) {
+            const char = str[i];
+
+            if (char === '[') {
+                inBrackets = true;
+                count++; // count the entire bracketed group as one character
+            } else if (char === ']') {
+                inBrackets = false;
+            } else if (!inBrackets) {
+                count++;
+            }
+        }
+
+        return count;
     }
 
     document.addEventListener('input', function(e) {
