@@ -1,0 +1,450 @@
+---
+layout: default
+title: "Word Counter"
+---
+
+<style>
+    .word-counter-container {
+        display: flex;
+        gap: 30px;
+        margin-top: 20px;
+    }
+
+    .input-section, .results-section {
+        flex: 1;
+        background: #f8f9fa;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .source-input {
+        margin-bottom: 15px;
+        padding: 15px;
+        background: white;
+        border-radius: 6px;
+        border: 1px solid #ddd;
+    }
+
+    .source-input h3 {
+        margin: 0 0 10px 0;
+        color: #333;
+    }
+
+    .source-name {
+        width: 100%;
+        padding: 8px;
+        margin-bottom: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        font-size: 16px;
+        font-weight: bold;
+        color: #333;
+    }
+
+    .source-name:focus {
+        outline: none;
+        border-color: #007bff;
+        box-shadow: 0 0 0 2px rgba(0,123,255,0.25);
+    }
+
+    .source-input textarea {
+        width: 100%;
+        min-height: 100px;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        font-family: inherit;
+        resize: vertical;
+    }
+
+    .button-group {
+        display: flex;
+        gap: 10px;
+        margin-top: 15px;
+    }
+
+    button {
+        padding: 10px 20px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 14px;
+        transition: background-color 0.3s;
+    }
+
+    .btn-primary {
+        background: #007bff;
+        color: white;
+    }
+
+    .btn-primary:hover {
+        background: #0056b3;
+    }
+
+    .btn-secondary {
+        background: #6c757d;
+        color: white;
+    }
+
+    .btn-secondary:hover {
+        background: #545b62;
+    }
+
+    .btn-danger {
+        background: #dc3545;
+        color: white;
+    }
+
+    .btn-danger:hover {
+        background: #c82333;
+    }
+
+    .btn-success {
+        background: #28a745;
+        color: white;
+    }
+
+    .btn-success:hover {
+        background: #1e7e34;
+    }
+
+    .results-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+        background: white;
+        border-radius: 6px;
+        overflow: hidden;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .results-table th,
+    .results-table td {
+        padding: 12px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+    }
+
+    .results-table th {
+        background: #007bff;
+        color: white;
+        font-weight: bold;
+    }
+
+    .results-table tr:hover {
+        background: #f5f5f5;
+    }
+
+    .word-count {
+        font-weight: bold;
+        color: #007bff;
+    }
+
+    h2 {
+        color: #333;
+        border-bottom: 2px solid #007bff;
+        padding-bottom: 10px;
+        margin-top: 30px;
+    }
+
+    .empty-state {
+        text-align: center;
+        color: #666;
+        font-style: italic;
+        padding: 40px;
+    }
+
+    .controls {
+        margin-bottom: 20px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .controls label {
+        font-weight: bold;
+        color: #333;
+    }
+
+    .sort-select {
+        padding: 8px 12px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        font-size: 14px;
+        background: white;
+        cursor: pointer;
+    }
+
+    .sort-select:focus {
+        outline: none;
+        border-color: #007bff;
+        box-shadow: 0 0 0 2px rgba(0,123,255,0.25);
+    }
+
+    @media (max-width: 768px) {
+        .word-counter-container {
+            flex-direction: column;
+        }
+    }
+</style>
+
+<h1>Word Counter Tool</h1>
+<p>Enter multiple sources below to count word occurrences across all sources.</p>
+
+<div class="word-counter-container">
+    <div class="input-section">
+        <h2>Sources</h2>
+        <div id="sources-container">
+            <div class="source-input">
+                <input type="text" class="source-name" value="Source 1" placeholder="Enter source name...">
+                <textarea placeholder="Enter your text here..."></textarea>
+            </div>
+        </div>
+        <div class="button-group">
+            <button class="btn-secondary" onclick="addSource()">Add Source</button>
+            <button class="btn-danger" onclick="clearAll()">Clear All</button>
+            <button class="btn-success" onclick="countWords()">Count Words</button>
+        </div>
+    </div>
+
+    <div class="results-section">
+        <h2>Word Count Results</h2>
+        <div class="controls">
+            <label for="sort-select">Sort by:</label>
+            <select id="sort-select" class="sort-select" onchange="countWords()">
+                <option value="alpha-asc">Alphabetical (A-Z)</option>
+                <option value="alpha-desc">Alphabetical (Z-A)</option>
+                <option value="length-asc">Length (Shortest to Longest)</option>
+                <option value="length-desc">Length (Longest to Shortest)</option>
+                <option value="count-desc">Frequency (Most to Least)</option>
+                <option value="count-asc">Frequency (Least to Most)</option>
+            </select>
+        </div>
+        <div id="results-container">
+            <div class="empty-state">
+                Enter some sources and click "Count Words" to see results
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    let sourceCount = 1;
+
+    function saveState() {
+        const sources = document.querySelectorAll('.source-input');
+        const state = [];
+        
+        sources.forEach(source => {
+            const input = source.querySelector('input');
+            const textarea = source.querySelector('textarea');
+            
+            state.push({
+                name: input.value.trim(),
+                content: textarea.value.trim()
+            });
+        });
+        
+        localStorage.setItem('wordCounterState', JSON.stringify(state));
+    }
+    
+    function loadState() {
+        const savedState = localStorage.getItem('wordCounterState');
+        if (!savedState) return;
+        
+        try {
+            const state = JSON.parse(savedState);
+            const container = document.getElementById('sources-container');
+            container.innerHTML = '';
+            
+            state.forEach((source, index) => {
+                const sourceDiv = document.createElement('div');
+                sourceDiv.className = 'source-input';
+                sourceDiv.innerHTML = `
+                    <input type="text" class="source-name" value="${source.name}" placeholder="Enter source name...">
+                    <textarea placeholder="Enter your text here...">${source.content}</textarea>
+                `;
+                container.appendChild(sourceDiv);
+            });
+            
+            sourceCount = state.length || 1;
+        } catch (e) {
+            console.error('Error loading state:', e);
+        }
+    }
+
+    function addSource() {
+        sourceCount++;
+        const container = document.getElementById('sources-container');
+        const sourceDiv = document.createElement('div');
+        sourceDiv.className = 'source-input';
+        sourceDiv.innerHTML = `
+            <input type="text" class="source-name" value="Source ${sourceCount}" placeholder="Enter source name...">
+            <textarea placeholder="Enter your text here..."></textarea>
+        `;
+        container.appendChild(sourceDiv);
+        saveState();
+    }
+
+    function clearAll() {
+        const container = document.getElementById('sources-container');
+        container.innerHTML = `
+            <div class="source-input">
+                <input type="text" class="source-name" value="Source 1" placeholder="Enter source name...">
+                <textarea placeholder="Enter your text here..."></textarea>
+            </div>
+        `;
+        sourceCount = 1;
+        document.getElementById('results-container').innerHTML = `
+            <div class="empty-state">
+                Enter some sources and click "Count Words" to see results
+            </div>
+        `;
+        saveState();
+    }
+
+    function countWords() {
+        const sources = document.querySelectorAll('.source-input');
+        const wordCounts = {};
+        
+        sources.forEach((source, index) => {
+            const input = source.querySelector('input');
+            const sourceName = input.value.trim();
+            const textarea = source.querySelector('textarea');
+            const text = textarea.value.trim();
+            
+            if (text) {
+                const words = text.match(/(\w|\[|\])+/g) || [];
+                
+                words.forEach(word => {
+                    if (!wordCounts[word]) {
+                        wordCounts[word] = {};
+                    }
+                    
+                    if (!wordCounts[word][sourceName]) {
+                        wordCounts[word][sourceName] = 0;
+                    }
+                    
+                    wordCounts[word][sourceName]++;
+                });
+            }
+        });
+
+        const sortSelect = document.getElementById('sort-select');
+        const sortMethod = sortSelect.value;
+        displayResults(wordCounts, sortMethod);
+    }
+
+    function displayResults(wordCounts, sortMethod) {
+        const resultsContainer = document.getElementById('results-container');
+        
+        if (Object.keys(wordCounts).length === 0) {
+            resultsContainer.innerHTML = `
+                <div class="empty-state">
+                    No words found in the entered sources
+                </div>
+            `;
+            return;
+        }
+
+        let sortedWords;
+        switch(sortMethod) {
+            case 'alpha-asc':
+                sortedWords = Object.keys(wordCounts).sort();
+                break;
+            case 'alpha-desc':
+                sortedWords = Object.keys(wordCounts).sort().reverse();
+                break;
+            case 'length-asc':
+                sortedWords = Object.keys(wordCounts).sort((a, b) => {
+                    const lengthDiff = a.length - b.length;
+                    return lengthDiff !== 0 ? lengthDiff : a.localeCompare(b);
+                });
+                break;
+            case 'length-desc':
+                sortedWords = Object.keys(wordCounts).sort((a, b) => {
+                    const lengthDiff = b.length - a.length;
+                    return lengthDiff !== 0 ? lengthDiff : a.localeCompare(b);
+                });
+                break;
+            case 'count-desc':
+                sortedWords = Object.keys(wordCounts).sort((a, b) => {
+                    const totalA = Object.values(wordCounts[a]).reduce((sum, count) => sum + count, 0);
+                    const totalB = Object.values(wordCounts[b]).reduce((sum, count) => sum + count, 0);
+                    const countDiff = totalB - totalA;
+                    return countDiff !== 0 ? countDiff : a.localeCompare(b);
+                });
+                break;
+            case 'count-asc':
+                sortedWords = Object.keys(wordCounts).sort((a, b) => {
+                    const totalA = Object.values(wordCounts[a]).reduce((sum, count) => sum + count, 0);
+                    const totalB = Object.values(wordCounts[b]).reduce((sum, count) => sum + count, 0);
+                    const countDiff = totalA - totalB;
+                    return countDiff !== 0 ? countDiff : a.localeCompare(b);
+                });
+                break;
+            default:
+                sortedWords = Object.keys(wordCounts).sort();
+        }
+
+        let tableHTML = `
+            <table class="results-table">
+                <thead>
+                    <tr>
+                        <th>Word</th>
+                        <th>Sources</th>
+                    </tr>
+                </thead>
+                <tbody>
+        `;
+
+        sortedWords.forEach(word => {
+            const sources = wordCounts[word];
+            const sourceEntries = Object.entries(sources)
+                .map(([sourceName, count]) => {
+                    if (count === 1) {
+                        return sourceName;
+                    } else {
+                        return `${sourceName} x${count}`;
+                    }
+                })
+                .join(', ');
+
+            tableHTML += `
+                <tr>
+                    <td class="word-count">${word}</td>
+                    <td>${sourceEntries}</td>
+                </tr>
+            `;
+        });
+
+        tableHTML += `
+                </tbody>
+            </table>
+        `;
+
+        resultsContainer.innerHTML = tableHTML;
+    }
+
+    document.addEventListener('input', function(e) {
+        if (e.target.classList.contains('source-name') || e.target.tagName === 'TEXTAREA') {
+            saveState();
+        }
+    });
+
+    document.addEventListener('DOMContentLoaded', function() {
+        loadState();
+    });
+
+    document.addEventListener('keydown', function(e) {
+        if (e.ctrlKey || e.metaKey) {
+            switch(e.key) {
+                case 'Enter':
+                    e.preventDefault();
+                    countWords();
+                    break;
+            }
+        }
+    });
+</script>
