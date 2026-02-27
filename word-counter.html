@@ -215,6 +215,8 @@ title: "Word Counter"
             <select id="sort-select" class="sort-select" onchange="countWords()">
                 <option value="alpha-asc">Alphabetical (A-Z)</option>
                 <option value="alpha-desc">Alphabetical (Z-A)</option>
+                <option value="alpha-asc-backward">Reversed Alphabetical (A-Z)</option>
+                <option value="alpha-desc-backward">Reversed Alphabetical (Z-A)</option>
                 <option value="length-asc">Length (Shortest to Longest)</option>
                 <option value="length-desc">Length (Longest to Shortest)</option>
                 <option value="count-desc">Frequency (Most to Least)</option>
@@ -355,6 +357,20 @@ title: "Word Counter"
                 break;
             case 'alpha-desc':
                 sortedWords = Object.keys(wordCounts).sort().reverse();
+                break;
+            case 'alpha-asc-backward':
+                sortedWords = Object.keys(wordCounts).sort((a, b) => {
+                    const reversedA = a.split('').reverse().join('');
+                    const reversedB = b.split('').reverse().join('');
+                    return reversedA.localeCompare(reversedB);
+                });
+                break;
+            case 'alpha-desc-backward':
+                sortedWords = Object.keys(wordCounts).sort((a, b) => {
+                    const reversedA = a.split('').reverse().join('');
+                    const reversedB = b.split('').reverse().join('');
+                    return reversedB.localeCompare(reversedA);
+                });
                 break;
             case 'length-asc':
                 sortedWords = Object.keys(wordCounts).sort((a, b) => {
