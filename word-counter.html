@@ -221,6 +221,8 @@ title: "Word Counter"
                 <option value="length-desc">Length (Longest to Shortest)</option>
                 <option value="count-desc">Frequency (Most to Least)</option>
                 <option value="count-asc">Frequency (Least to Most)</option>
+                <option value="sources-desc">Sources (Most to Least)</option>
+                <option value="sources-asc">Sources (Least to Most)</option>
             </select>
         </div>
         <div id="results-container">
@@ -397,6 +399,34 @@ title: "Word Counter"
                     const totalA = Object.values(wordCounts[a]).reduce((sum, count) => sum + count, 0);
                     const totalB = Object.values(wordCounts[b]).reduce((sum, count) => sum + count, 0);
                     const countDiff = totalA - totalB;
+                    return countDiff !== 0 ? countDiff : a.localeCompare(b);
+                });
+                break;
+            case 'sources-desc':
+                sortedWords = Object.keys(wordCounts).sort((a, b) => {
+                    let totalA = Object.values(wordCounts[a]).length();
+                    let totalB = Object.values(wordCounts[b]).length();
+                    let countDiff = totalB - totalA;
+                    if (countDiff !== 0) {
+                        return countDiff;
+                    }
+                    totalA = Object.values(wordCounts[a]).reduce((sum, count) => sum + count, 0);
+                    totalB = Object.values(wordCounts[b]).reduce((sum, count) => sum + count, 0);
+                    countDiff = totalB - totalA;
+                    return countDiff !== 0 ? countDiff : a.localeCompare(b);
+                });
+                break;
+            case 'sources-asc':
+                sortedWords = Object.keys(wordCounts).sort((a, b) => {
+                    let totalA = Object.values(wordCounts[a]).length();
+                    let totalB = Object.values(wordCounts[b]).length();
+                    let countDiff = totalA - totalB;
+                    if (countDiff !== 0) {
+                        return countDiff;
+                    }
+                    totalA = Object.values(wordCounts[a]).reduce((sum, count) => sum + count, 0);
+                    totalB = Object.values(wordCounts[b]).reduce((sum, count) => sum + count, 0);
+                    countDiff = totalA - totalB;
                     return countDiff !== 0 ? countDiff : a.localeCompare(b);
                 });
                 break;
