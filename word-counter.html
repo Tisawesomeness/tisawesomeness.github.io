@@ -446,8 +446,8 @@ title: "Word Counter"
                 break;
             case 'sources-desc':
                 sortedWords = Object.keys(filteredWordCounts).sort((a, b) => {
-                    let totalA = Object.values(filteredWordCounts[a]).length();
-                    let totalB = Object.values(filteredWordCounts[b]).length();
+                    let totalA = Object.values(filteredWordCounts[a]).length;
+                    let totalB = Object.values(filteredWordCounts[b]).length;
                     let countDiff = totalB - totalA;
                     if (countDiff !== 0) {
                         return countDiff;
@@ -460,8 +460,8 @@ title: "Word Counter"
                 break;
             case 'sources-asc':
                 sortedWords = Object.keys(filteredWordCounts).sort((a, b) => {
-                    let totalA = Object.values(filteredWordCounts[a]).length();
-                    let totalB = Object.values(filteredWordCounts[b]).length();
+                    let totalA = Object.values(filteredWordCounts[a]).length;
+                    let totalB = Object.values(filteredWordCounts[b]).length;
                     let countDiff = totalA - totalB;
                     if (countDiff !== 0) {
                         return countDiff;
