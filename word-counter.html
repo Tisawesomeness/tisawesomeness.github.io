@@ -158,6 +158,12 @@ title: "Word Counter"
     .controls {
         margin-bottom: 20px;
         display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .control-row {
+        display: flex;
         align-items: center;
         gap: 10px;
     }
@@ -177,6 +183,22 @@ title: "Word Counter"
     }
 
     .sort-select:focus {
+        outline: none;
+        border-color: #007bff;
+        box-shadow: 0 0 0 2px rgba(0,123,255,0.25);
+    }
+
+    .filter-input {
+        padding: 8px 12px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        font-size: 14px;
+        background: white;
+        cursor: pointer;
+        min-width: 150px;
+    }
+
+    .filter-input:focus {
         outline: none;
         border-color: #007bff;
         box-shadow: 0 0 0 2px rgba(0,123,255,0.25);
@@ -204,6 +226,8 @@ title: "Word Counter"
         <div class="button-group">
             <button class="btn-secondary" onclick="addSource()">Add Source</button>
             <button class="btn-danger" onclick="clearAll()">Clear All</button>
+
+
             <button class="btn-success" onclick="countWords()">Count Words</button>
         </div>
     </div>
@@ -211,19 +235,29 @@ title: "Word Counter"
     <div class="results-section">
         <h2>Word Count Results</h2>
         <div class="controls">
-            <label for="sort-select">Sort by:</label>
-            <select id="sort-select" class="sort-select" onchange="countWords()">
-                <option value="alpha-asc">Alphabetical (A-Z)</option>
-                <option value="alpha-desc">Alphabetical (Z-A)</option>
-                <option value="alpha-asc-backward">Reversed Alphabetical (A-Z)</option>
-                <option value="alpha-desc-backward">Reversed Alphabetical (Z-A)</option>
-                <option value="length-asc">Length (Shortest to Longest)</option>
-                <option value="length-desc">Length (Longest to Shortest)</option>
-                <option value="count-desc">Frequency (Most to Least)</option>
-                <option value="count-asc">Frequency (Least to Most)</option>
-                <option value="sources-desc">Sources (Most to Least)</option>
-                <option value="sources-asc">Sources (Least to Most)</option>
-            </select>
+            <div class="control-row">
+                <label for="sort-select">Sort by:</label>
+                <select id="sort-select" class="sort-select" onchange="countWords()">
+                    <option value="alpha-asc">Alphabetical (A-Z)</option>
+                    <option value="alpha-desc">Alphabetical (Z-A)</option>
+                    <option value="alpha-asc-backward">Reversed Alphabetical (A-Z)</option>
+                    <option value="alpha-desc-backward">Reversed Alphabetical (Z-A)</option>
+                    <option value="length-asc">Length (Shortest to Longest)</option>
+                    <option value="length-desc">Length (Longest to Shortest)</option>
+                    <option value="count-desc">Frequency (Most to Least)</option>
+                    <option value="count-asc">Frequency (Least to Most)</option>
+                    <option value="sources-desc">Sources (Most to Least)</option>
+                    <option value="sources-asc">Sources (Least to Most)</option>
+                </select>
+            </div>
+            <div class="control-row">
+                <label for="word-filter">Word Filter:</label>
+                <input type="text" id="word-filter" class="word-filter" placeholder="Filter...", oninput="countWords()">
+            </div>
+            <div class="control-row">
+                <label for="source-filter">Source Filter:</label>
+                <input type="text" id="source-filter" class="source-filter" placeholder="Filter...", oninput="countWords()">
+            </div>
         </div>
         <div id="results-container">
             <div class="empty-state">
@@ -335,12 +369,13 @@ title: "Word Counter"
             }
         });
 
-        const sortSelect = document.getElementById('sort-select');
-        const sortMethod = sortSelect.value;
-        displayResults(wordCounts, sortMethod);
+        const sortMethod = document.getElementById('sort-select').value;
+        const wordFilter = document.getElementById('word-filter').value;
+        const sourceFilter = document.getElementById('source-filter').value;
+        displayResults(wordCounts, sortMethod, wordFilter, sourceFilter);
     }
 
-    function displayResults(wordCounts, sortMethod) {
+    function displayResults(wordCounts, sortMethod, wordFilter, sourceFilter) {
         const resultsContainer = document.getElementById('results-container');
         
         if (Object.keys(wordCounts).length === 0) {
@@ -352,80 +387,87 @@ title: "Word Counter"
             return;
         }
 
+        const filteredWordCounts = Object.fromEntries(Object.entries(wordCounts).filter(([word, sources]) => {
+            return (!wordFilter || word.toLowerCase().includes(wordFilter.toLowerCase())) &&
+                (!sourceFilter || Object.keys(sources).some(sourceName => {
+                    return sourceName.toLowerCase().includes(sourceFilter.toLowerCase())
+                }));
+        }));
+
         let sortedWords;
         switch(sortMethod) {
             case 'alpha-asc':
-                sortedWords = Object.keys(wordCounts).sort();
+                sortedWords = Object.keys(filteredWordCounts).sort();
                 break;
             case 'alpha-desc':
-                sortedWords = Object.keys(wordCounts).sort().reverse();
+                sortedWords = Object.keys(filteredWordCounts).sort().reverse();
                 break;
             case 'alpha-asc-backward':
-                sortedWords = Object.keys(wordCounts).sort((a, b) => {
+                sortedWords = Object.keys(filteredWordCounts).sort((a, b) => {
                     const reversedA = a.split('').reverse().join('');
                     const reversedB = b.split('').reverse().join('');
                     return reversedA.localeCompare(reversedB);
                 });
                 break;
             case 'alpha-desc-backward':
-                sortedWords = Object.keys(wordCounts).sort((a, b) => {
+                sortedWords = Object.keys(filteredWordCounts).sort((a, b) => {
                     const reversedA = a.split('').reverse().join('');
                     const reversedB = b.split('').reverse().join('');
                     return reversedB.localeCompare(reversedA);
                 });
                 break;
             case 'length-asc':
-                sortedWords = Object.keys(wordCounts).sort((a, b) => {
+                sortedWords = Object.keys(filteredWordCounts).sort((a, b) => {
                     const lengthDiff = lengthCountingBracketsAsOneCharacter(a) - lengthCountingBracketsAsOneCharacter(b);
                     return lengthDiff !== 0 ? lengthDiff : a.localeCompare(b);
                 });
                 break;
             case 'length-desc':
-                sortedWords = Object.keys(wordCounts).sort((a, b) => {
+                sortedWords = Object.keys(filteredWordCounts).sort((a, b) => {
                     const lengthDiff = lengthCountingBracketsAsOneCharacter(b) - lengthCountingBracketsAsOneCharacter(a);
                     return lengthDiff !== 0 ? lengthDiff : a.localeCompare(b);
                 });
                 break;
             case 'count-desc':
-                sortedWords = Object.keys(wordCounts).sort((a, b) => {
-                    const totalA = Object.values(wordCounts[a]).reduce((sum, count) => sum + count, 0);
-                    const totalB = Object.values(wordCounts[b]).reduce((sum, count) => sum + count, 0);
+                sortedWords = Object.keys(filteredWordCounts).sort((a, b) => {
+                    const totalA = Object.values(filteredWordCounts[a]).reduce((sum, count) => sum + count, 0);
+                    const totalB = Object.values(filteredWordCounts[b]).reduce((sum, count) => sum + count, 0);
                     const countDiff = totalB - totalA;
                     return countDiff !== 0 ? countDiff : a.localeCompare(b);
                 });
                 break;
             case 'count-asc':
-                sortedWords = Object.keys(wordCounts).sort((a, b) => {
-                    const totalA = Object.values(wordCounts[a]).reduce((sum, count) => sum + count, 0);
-                    const totalB = Object.values(wordCounts[b]).reduce((sum, count) => sum + count, 0);
+                sortedWords = Object.keys(filteredWordCounts).sort((a, b) => {
+                    const totalA = Object.values(filteredWordCounts[a]).reduce((sum, count) => sum + count, 0);
+                    const totalB = Object.values(filteredWordCounts[b]).reduce((sum, count) => sum + count, 0);
                     const countDiff = totalA - totalB;
                     return countDiff !== 0 ? countDiff : a.localeCompare(b);
                 });
                 break;
             case 'sources-desc':
-                sortedWords = Object.keys(wordCounts).sort((a, b) => {
-                    let totalA = Object.values(wordCounts[a]).length();
-                    let totalB = Object.values(wordCounts[b]).length();
+                sortedWords = Object.keys(filteredWordCounts).sort((a, b) => {
+                    let totalA = Object.values(filteredWordCounts[a]).length();
+                    let totalB = Object.values(filteredWordCounts[b]).length();
                     let countDiff = totalB - totalA;
                     if (countDiff !== 0) {
                         return countDiff;
                     }
-                    totalA = Object.values(wordCounts[a]).reduce((sum, count) => sum + count, 0);
-                    totalB = Object.values(wordCounts[b]).reduce((sum, count) => sum + count, 0);
+                    totalA = Object.values(filteredWordCounts[a]).reduce((sum, count) => sum + count, 0);
+                    totalB = Object.values(filteredWordCounts[b]).reduce((sum, count) => sum + count, 0);
                     countDiff = totalB - totalA;
                     return countDiff !== 0 ? countDiff : a.localeCompare(b);
                 });
                 break;
             case 'sources-asc':
-                sortedWords = Object.keys(wordCounts).sort((a, b) => {
-                    let totalA = Object.values(wordCounts[a]).length();
-                    let totalB = Object.values(wordCounts[b]).length();
+                sortedWords = Object.keys(filteredWordCounts).sort((a, b) => {
+                    let totalA = Object.values(filteredWordCounts[a]).length();
+                    let totalB = Object.values(filteredWordCounts[b]).length();
                     let countDiff = totalA - totalB;
                     if (countDiff !== 0) {
                         return countDiff;
                     }
-                    totalA = Object.values(wordCounts[a]).reduce((sum, count) => sum + count, 0);
-                    totalB = Object.values(wordCounts[b]).reduce((sum, count) => sum + count, 0);
+                    totalA = Object.values(filteredWordCounts[a]).reduce((sum, count) => sum + count, 0);
+                    totalB = Object.values(filteredWordCounts[b]).reduce((sum, count) => sum + count, 0);
                     countDiff = totalA - totalB;
                     return countDiff !== 0 ? countDiff : a.localeCompare(b);
                 });
