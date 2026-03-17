@@ -73,6 +73,17 @@ title: "Word Counter"
         transition: background-color 0.3s;
     }
 
+    button:disabled {
+        background: #e0e0e0 !important;
+        color: #a0a0a0 !important;
+        cursor: not-allowed !important;
+        opacity: 0.6;
+    }
+
+    button:disabled:hover {
+        background: #e0e0e0 !important;
+    }
+
     .btn-primary {
         background: #007bff;
         color: white;
@@ -257,6 +268,9 @@ title: "Word Counter"
             <div class="control-row">
                 <label for="source-filter">Source Filter:</label>
                 <input type="text" id="source-filter" class="source-filter" placeholder="Filter...", oninput="countWords()">
+            </div>
+            <div class="control-row">
+                <button id="copy" class="btn-primary" disabled="true" onclick="copyTableToClipboard()" title="Copy table to clipboard">Copy Table</button>
             </div>
         </div>
         <div id="results-container">
@@ -513,6 +527,75 @@ title: "Word Counter"
         `;
 
         resultsContainer.innerHTML = tableHTML;
+        document.getElementById("copy").disabled = false;
+    }
+
+    function copyTableToClipboard() {
+        const resultsContainer = document.getElementById('results-container');
+        const table = resultsContainer.querySelector('.results-table');
+        
+        if (!table) {
+            alert('No table found to copy. Please count words first.');
+            return;
+        }
+
+        // Create a temporary div to hold the table for processing
+        const tempDiv = document.createElement('div');
+        tempDiv.appendChild(table.cloneNode(true));
+        
+        // Process the table as TSV
+        let tsv = '';
+        const rows = tempDiv.querySelectorAll('tr');
+
+        // Skip the first row (header)
+        for (let i = 1; i < rows.length; i++) {
+            const row = rows[i];
+            const cells = row.querySelectorAll('td');
+            let rowText = [];
+            
+            cells.forEach(cell => {
+                // Get cell text and replace tabs/newlines with spaces
+                let cellText = cell.textContent.replace(/\t/g, ' ').replace(/\n/g, ' ').trim();
+                // Remove extra spaces between words
+                cellText = cellText.replace(/\s+/g, ' ');
+                rowText.push(cellText);
+            });
+            
+            tsv += rowText.join('\t') + '\n';
+        }
+        
+        // Remove trailing newline
+        tsv = tsv.trim();
+
+        // Create a textarea to hold the TSV for copying
+        const textarea = document.createElement('textarea');
+        textarea.value = tsv;
+        document.body.appendChild(textarea);
+        textarea.select();
+        
+        try {
+            // Copy to clipboard
+            const successful = document.execCommand('copy');
+            document.body.removeChild(textarea);
+            
+            if (successful) {
+                // Show success feedback
+                const button = event.target;
+                const originalText = button.textContent;
+                button.textContent = 'Copied!';
+                button.style.background = '#28a745';
+                
+                setTimeout(() => {
+                    button.textContent = originalText;
+                    button.style.background = '';
+                }, 2000);
+            } else {
+                alert('Failed to copy table to clipboard');
+            }
+        } catch (err) {
+            document.body.removeChild(textarea);
+            alert('Failed to copy table to clipboard: ' + err.message);
+        }
     }
 
     function lengthCountingBracketsAsOneCharacter(str) {
