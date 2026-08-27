@@ -12,13 +12,182 @@ title: "Minecraft Snapshot Reverse Engineering"
 <hr>
 
 <h2>Snapshot Posts</h2>
-<small>Subscribe <a href="{{ site.url }}/snapshot_feed.xml"> via RSS</a>
-{% for post in site.categories["snapshots"] %}</small>
-  <h3>
-    <a href="{{ post.url }}">{{ post.title }}</a>
-    &ensp;
-    <small><time datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date_to_string }}</time></small>
-  </h3>
-  {{ post.excerpt }}
+
+<div class="filter-header">
+  <small>Subscribe <a href="{{ site.url }}/snapshot_feed.xml"> via RSS</a></small>
+
+  <div class="version-filter-wrapper">
+    <button class="version-filter-btn" aria-haspopup="listbox" aria-expanded="false" aria-controls="version-filter-options" title="Filter version">
+      <svg class="version-filter-icon" aria-hidden="true" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round">
+        <path d="M2 2 L12 2 L22 12 L12 22 L2 12 Z"/>
+        <circle cx="7" cy="7" r="1" fill="white"/>
+      </svg>
+      <span class="version-filter-text">All</span>
+      <svg class="version-filter-chevron" aria-hidden="true" viewBox="0 0 16 16" width="12" height="12">
+        <path fill-rule="evenodd" d="M4.707 5.707a.75.75 0 011.06 0L8 8.439l2.233-2.732a.75.75 0 111.06 1.06l-3.25 4a.75.75 0 01-1.06 0l-3.25-4a.75.75 0 010-1.06z"/>
+      </svg>
+    </button>
+
+    <div class="version-filter-dropdown" id="version-filter-dropdown" role="listbox" aria-label="Filter by version">
+      <div class="version-filter-options" id="version-filter-options" role="presentation">
+        <button class="version-filter-option" role="option" data-value="all" aria-selected="true">All</button>
+        {% assign releases = site.categories["snapshots"] | where_exp: "post", "post.release" | group_by: "release" | sort: 'name' | reverse %}
+        {% for group in releases %}
+          <button class="version-filter-option" role="option" data-value="{{ group.name }}" aria-selected="false">{{ group.name }}</button>
+        {% endfor %}
+      </div>
+    </div>
+
+    <select id="release-filter" class="version-filter-sr" aria-hidden="true" tabindex="-1">
+      <option value="all" selected>All</option>
+      {% assign releases = site.categories["snapshots"] | where_exp: "post", "post.release" | group_by: "release" | sort: 'name' | reverse %}
+      {% for group in releases %}
+        <option value="{{ group.name }}">{{ group.name }}</option>
+      {% endfor %}
+    </select>
+  </div>
+</div>
+
+{% for post in site.categories["snapshots"] %}
+  <div class="snapshot-post" data-release="{{ post.release | default: 'unknown' }}">
+    <h3>
+      <a href="{{ post.url }}">{{ post.title }}</a>
+      &ensp;
+      <small><time datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date_to_string }}</time></small>
+    </h3>
+    {{ post.excerpt }}
+  </div>
 {% endfor %}
 
+<script>
+(function() {
+  var wrapper = document.querySelector('.version-filter-wrapper');
+  var btn = wrapper.querySelector('.version-filter-btn');
+  var dropdown = wrapper.querySelector('.version-filter-dropdown');
+  var options = wrapper.querySelectorAll('.version-filter-option');
+  var hiddenSelect = wrapper.querySelector('.version-filter-sr');
+  var btnText = btn.querySelector('.version-filter-text');
+  var chevron = btn.querySelector('.version-filter-chevron');
+  var isOpen = false;
+  var selectedIndex = 0;
+  
+  function openDropdown() {
+    isOpen = true;
+    btn.setAttribute('aria-expanded', 'true');
+    dropdown.hidden = false;
+    dropdown.style.display = 'block';
+    chevron.style.transform = 'rotate(180deg)';
+    options[selectedIndex].focus();
+  }
+  
+  function closeDropdown() {
+    isOpen = false;
+    btn.setAttribute('aria-expanded', 'false');
+    dropdown.hidden = true;
+    dropdown.style.display = 'none';
+    chevron.style.transform = 'rotate(0deg)';
+    btn.focus();
+  }
+  
+  function selectOption(index) {
+    options.forEach(function(opt, i) {
+      opt.setAttribute('aria-selected', i === index);
+    });
+    selectedIndex = index;
+    var value = options[index].dataset.value;
+    var text = options[index].textContent;
+    btnText.textContent = text;
+    hiddenSelect.value = value;
+    closeDropdown();
+    
+    var event = new Event('change', { bubbles: true });
+    hiddenSelect.dispatchEvent(event);
+  }
+  
+  btn.addEventListener('click', function(e) {
+    e.stopPropagation();
+    if (isOpen) {
+      closeDropdown();
+    } else {
+      openDropdown();
+    }
+  });
+  
+  options.forEach(function(opt, index) {
+    opt.addEventListener('click', function() {
+      selectOption(index);
+    });
+    
+    opt.addEventListener('keydown', function(e) {
+      switch(e.key) {
+        case 'Enter':
+        case ' ':
+          e.preventDefault();
+          selectOption(index);
+          break;
+        case 'ArrowDown':
+          e.preventDefault();
+          var nextIndex = Math.min(index + 1, options.length - 1);
+          options[nextIndex].focus();
+          break;
+        case 'ArrowUp':
+          e.preventDefault();
+          var prevIndex = Math.max(index - 1, 0);
+          options[prevIndex].focus();
+          break;
+        case 'Home':
+          e.preventDefault();
+          options[0].focus();
+          break;
+        case 'End':
+          e.preventDefault();
+          options[options.length - 1].focus();
+          break;
+        case 'Escape':
+          closeDropdown();
+          break;
+        case 'Tab':
+          closeDropdown();
+          break;
+      }
+    });
+  });
+  
+  btn.addEventListener('keydown', function(e) {
+    if (!isOpen) {
+      if (e.key === 'ArrowDown' || e.key === 'ArrowUp' || e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        openDropdown();
+      }
+    } else {
+      if (e.key === 'Escape') {
+        closeDropdown();
+      } else if (e.key === 'Tab') {
+        closeDropdown();
+      }
+    }
+  });
+  
+  document.addEventListener('click', function(e) {
+    if (isOpen && !wrapper.contains(e.target)) {
+      closeDropdown();
+    }
+  });
+  
+  hiddenSelect.addEventListener('change', function() {
+    var selectedRelease = this.value;
+    var posts = document.getElementsByClassName('snapshot-post');
+    
+    for (var i = 0; i < posts.length; i++) {
+      var post = posts[i];
+      var postRelease = post.getAttribute('data-release');
+      
+      if (selectedRelease === 'all' || postRelease === selectedRelease) {
+        post.style.display = 'block';
+      } else {
+        post.style.display = 'none';
+      }
+    }
+  });
+})();
+</script>
