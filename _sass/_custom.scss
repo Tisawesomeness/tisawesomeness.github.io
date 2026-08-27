@@ -52,6 +52,12 @@ details:not([open]):focus, details:not([open]):hover {
   margin-right: -0.1em;
 }
 
+// Highlight
+
+.highlighted {
+  border-bottom: 2px solid rgba(255, 255, 100, 0.8);
+}
+
 // Project boxes
 
 .project-box {

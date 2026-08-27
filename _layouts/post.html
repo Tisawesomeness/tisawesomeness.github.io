@@ -11,6 +11,58 @@ layout: default
 }
 </style>
 
+<!-- Anchor heading navigation -->
+<script>
+  var lastHighlighted = null;
+
+  function highlightHeader(headerId) {
+    var header = document.getElementById(headerId);
+    if (!header) return;
+    if (lastHighlighted && lastHighlighted !== header) {
+      lastHighlighted.classList.remove('highlighted');
+    }
+    header.classList.add('highlighted');
+    lastHighlighted = header;
+    header.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  document.addEventListener('click', function (e) {
+    var octicon = e.target.closest('.octicon');
+    if (!octicon) return;
+    var anchor = octicon.closest('.anchor');
+    if (!anchor) return;
+    var href = anchor.getAttribute('href');
+    if (!href) return;
+    e.preventDefault();
+    var headerId = href.substring(1);
+    history.pushState(null, '', location.href.split('#')[0] + href);
+    highlightHeader(headerId);
+    var url = location.href.split('#')[0] + href;
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(url);
+    } else {
+      var ta = document.createElement('textarea');
+      ta.value = url;
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand('copy');
+      ta.remove();
+    }
+  });
+
+  window.addEventListener('hashchange', function () {
+    var headerId = window.location.hash.substring(1);
+    highlightHeader(headerId);
+  });
+
+  document.addEventListener('DOMContentLoaded', function() {
+    if (window.location.hash) {
+      var headerId = window.location.hash.substring(1);
+      highlightHeader(headerId);
+    }
+  });
+</script>
+
 <article class="post">
   <h1 class="post-title">{{ page.title }}</h1>
   <time datetime="{{ page.date | date_to_xmlschema }}" class="post-date">{{ page.date | date_to_string }}</time>
@@ -19,7 +71,7 @@ layout: default
   {% endif %}
   <div class="post-spacer"></div>
   <!-- https://github.com/allejo/jekyll-anchor-headings/wiki/Examples#github-style-octicon-links -->
-  {% include anchor_headings.html html=content anchorAttrs='aria-label="Permalink to %heading%"' anchorBody="<svg class='octicon' viewBox='0 0 16 16' version='1.1' width='16' height='32' aria-hidden='true'><path fill-rule='evenodd' d='M7.775 3.275a.75.75 0 001.06 1.06l1.25-1.25a2 2 0 112.83 2.83l-2.5 2.5a2 2 0 01-2.83 0 .75.75 0 00-1.06 1.06 3.5 3.5 0 004.95 0l2.5-2.5a3.5 3.5 0 00-4.95-4.95l-1.25 1.25zm-4.69 9.64a2 2 0 010-2.83l2.5-2.5a2 2 0 012.83 0 .75.75 0 001.06-1.06 3.5 3.5 0 00-4.95 0l-2.5 2.5a3.5 3.5 0 004.95 4.95l1.25-1.25a.75.75 0 00-1.06-1.06l-1.25 1.25a2 2 0 01-2.83 0z'></path></svg>" %}
+  {% include anchor_headings.html html=content anchorClass="anchor" anchorAttrs='aria-label="Permalink to %heading%"' anchorBody="<svg class='octicon' viewBox='0 0 16 16' version='1.1' width='16' height='32' aria-hidden='true'><path fill-rule='evenodd' d='M7.775 3.275a.75.75 0 001.06 1.06l1.25-1.25a2 2 0 112.83 2.83l-2.5 2.5a2 2 0 01-2.83 0 .75.75 0 00-1.06 1.06 3.5 3.5 0 004.95 0l2.5-2.5a3.5 3.5 0 00-4.95-4.95l-1.25 1.25zm-4.69 9.64a2 2 0 010-2.83l2.5-2.5a2 2 0 012.83 0 .75.75 0 001.06-1.06 3.5 3.5 0 00-4.95 0l-2.5 2.5a3.5 3.5 0 004.95 4.95l1.25-1.25a.75.75 0 00-1.06-1.06l-1.25 1.25a2 2 0 01-2.83 0z'></path></svg>" %}
 </article>
 
 <aside>
