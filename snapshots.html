@@ -13,42 +13,25 @@ title: "Minecraft Snapshot Reverse Engineering"
 
 <h2>Snapshot Posts</h2>
 
-<div class="filter-header">
+<div class="snapshot-header">
   <small>Subscribe <a href="{{ site.url }}/snapshot_feed.xml"> via RSS</a></small>
 
-  <div class="version-filter-wrapper">
-    <button class="version-filter-btn" aria-haspopup="listbox" aria-expanded="false" aria-controls="version-filter-options" title="Filter version">
-      <svg class="version-filter-icon" aria-hidden="true" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round">
-        <path d="M2 2 L12 2 L22 12 L12 22 L2 12 Z"/>
-        <circle cx="7" cy="7" r="1" fill="white"/>
-      </svg>
-      <span class="version-filter-text">All</span>
-      <svg class="version-filter-chevron" aria-hidden="true" viewBox="0 0 16 16" width="12" height="12">
-        <path fill-rule="evenodd" d="M4.707 5.707a.75.75 0 011.06 0L8 8.439l2.233-2.732a.75.75 0 111.06 1.06l-3.25 4a.75.75 0 01-1.06 0l-3.25-4a.75.75 0 010-1.06z"/>
-      </svg>
-    </button>
-
-    <div class="version-filter-dropdown" id="version-filter-dropdown" role="listbox" aria-label="Filter by version">
-      <div class="version-filter-options" id="version-filter-options" role="presentation">
-        <button class="version-filter-option" role="option" data-value="all" aria-selected="true">All</button>
-        {% assign releases = site.categories["snapshots"] | where_exp: "post", "post.release" | group_by: "release" | sort: 'name' | reverse %}
-        {% for group in releases %}
-          <button class="version-filter-option" role="option" data-value="{{ group.name }}" aria-selected="false">{{ group.name }}</button>
-        {% endfor %}
-      </div>
+  <div class="snapshot-wrapper">
+    <div id="version-filter" style="display: inline-block">
+      {% include version_filter.html %}
     </div>
 
-    <select id="release-filter" class="version-filter-sr" aria-hidden="true" tabindex="-1">
-      <option value="all" selected>All</option>
-      {% assign releases = site.categories["snapshots"] | where_exp: "post", "post.release" | group_by: "release" | sort: 'name' | reverse %}
-      {% for group in releases %}
-        <option value="{{ group.name }}">{{ group.name }}</option>
-      {% endfor %}
-    </select>
+    <button class="action-btn" id="search-btn" aria-haspopup="dialog" aria-expanded="false" aria-controls="search-dialog" title="Search">
+      <svg class="search-icon" aria-hidden="true" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="11" cy="11" r="8"/>
+        <path d="m21 21-4.35-4.35"/>
+      </svg>
+      <span class="search-btn-text">Search</span>
+    </button>
   </div>
   <noscript>
     <style>
-      .version-filter-wrapper { display: none !important; }
+      .snapshot-wrapper { display: none !important; }
     </style>
   </noscript>
 </div>
@@ -64,135 +47,131 @@ title: "Minecraft Snapshot Reverse Engineering"
   </div>
 {% endfor %}
 
+<div class="search-dialog-overlay" id="search-dialog-overlay" hidden>
+  <div class="search-dialog" id="search-dialog" role="dialog" aria-labelledby="search-dialog-title" aria-modal="true">
+    <div class="search-dialog-header">
+      <h2 id="search-dialog-title">Search</h2>
+      <button class="search-dialog-close" aria-label="Close search" id="search-dialog-close">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M18 6 6 18M6 6l12 12"/>
+        </svg>
+      </button>
+    </div>
+    <div class="search-dialog-content">
+      <div class="search-input-row">
+        <input type="search" id="search-input" placeholder="Search...">
+        <div class="search-version-filter" id="search-version-filter">
+          {% include version_filter.html %}
+        </div>
+      </div>
+      <ul id="results-container"></ul>
+    </div>
+  </div>
+</div>
+
+<script src="{{ '/assets/js/version-filter.js' | relative_url }}"></script>
+<script src="{{ '/assets/js/simple-jekyll-search.min.js' | relative_url }}?v={{ site.time | date: '%s' }}"></script>
 <script>
-(function() {
-  var wrapper = document.querySelector('.version-filter-wrapper');
-  var btn = wrapper.querySelector('.version-filter-btn');
-  var dropdown = wrapper.querySelector('.version-filter-dropdown');
-  var options = wrapper.querySelectorAll('.version-filter-option');
-  var hiddenSelect = wrapper.querySelector('.version-filter-sr');
-  var btnText = btn.querySelector('.version-filter-text');
-  var chevron = btn.querySelector('.version-filter-chevron');
-  var isOpen = false;
-  var selectedIndex = 0;
-  
-  function openDropdown() {
-    isOpen = true;
-    btn.setAttribute('aria-expanded', 'true');
-    dropdown.hidden = false;
-    dropdown.style.display = 'block';
-    chevron.style.transform = 'rotate(180deg)';
-    options[selectedIndex].focus();
-  }
-  
-  function closeDropdown() {
-    isOpen = false;
-    btn.setAttribute('aria-expanded', 'false');
-    dropdown.hidden = true;
-    dropdown.style.display = 'none';
-    chevron.style.transform = 'rotate(0deg)';
-    btn.focus();
-  }
-  
-  function selectOption(index) {
-    options.forEach(function(opt, i) {
-      opt.setAttribute('aria-selected', i === index);
-    });
-    selectedIndex = index;
-    var value = options[index].dataset.value;
-    var text = options[index].textContent;
-    btnText.textContent = text;
-    hiddenSelect.value = value;
-    closeDropdown();
-    
-    var event = new Event('change', { bubbles: true });
-    hiddenSelect.dispatchEvent(event);
-  }
-  
-  btn.addEventListener('click', function(e) {
-    e.stopPropagation();
-    if (isOpen) {
-      closeDropdown();
-    } else {
-      openDropdown();
-    }
-  });
-  
-  options.forEach(function(opt, index) {
-    opt.addEventListener('click', function() {
-      selectOption(index);
-    });
-    
-    opt.addEventListener('keydown', function(e) {
-      switch(e.key) {
-        case 'Enter':
-        case ' ':
-          e.preventDefault();
-          selectOption(index);
-          break;
-        case 'ArrowDown':
-          e.preventDefault();
-          var nextIndex = Math.min(index + 1, options.length - 1);
-          options[nextIndex].focus();
-          break;
-        case 'ArrowUp':
-          e.preventDefault();
-          var prevIndex = Math.max(index - 1, 0);
-          options[prevIndex].focus();
-          break;
-        case 'Home':
-          e.preventDefault();
-          options[0].focus();
-          break;
-        case 'End':
-          e.preventDefault();
-          options[options.length - 1].focus();
-          break;
-        case 'Escape':
-          closeDropdown();
-          break;
-        case 'Tab':
-          closeDropdown();
-          break;
-      }
-    });
-  });
-  
-  btn.addEventListener('keydown', function(e) {
-    if (!isOpen) {
-      if (e.key === 'ArrowDown' || e.key === 'ArrowUp' || e.key === 'Enter' || e.key === ' ') {
-        e.preventDefault();
-        openDropdown();
-      }
-    } else {
-      if (e.key === 'Escape') {
-        closeDropdown();
-      } else if (e.key === 'Tab') {
-        closeDropdown();
+  // Version filter
+  createVersionFilter({
+    wrapper: document.getElementById('version-filter'),
+    onChange: function(value) {
+      var posts = document.getElementsByClassName('snapshot-post');
+      for (var i = 0; i < posts.length; i++) {
+        var post = posts[i];
+        var postRelease = post.getAttribute('data-release');
+        post.style.display = (value === 'all' || postRelease === value) ? 'block' : 'none';
       }
     }
   });
-  
-  document.addEventListener('click', function(e) {
-    if (isOpen && !wrapper.contains(e.target)) {
-      closeDropdown();
+
+  // Search button
+  var searchBtn = document.getElementById("search-btn");
+  var searchDialog = document.getElementById('search-dialog');
+  var searchOverlay = document.getElementById('search-dialog-overlay');
+  var searchClose = document.getElementById('search-dialog-close');
+
+  function openSearchDialog() {
+    searchOverlay.style.display = 'flex';
+    searchDialog.setAttribute('aria-hidden', 'false');
+    searchBtn.setAttribute('aria-expanded', 'true');
+    document.getElementById('search-input').focus();
+  }
+
+  function closeSearchDialog() {
+    searchOverlay.style.display = 'none';
+    searchDialog.setAttribute('aria-hidden', 'true');
+    searchBtn.setAttribute('aria-expanded', 'false');
+    searchBtn.focus();
+  }
+
+  searchBtn.addEventListener('click', openSearchDialog);
+  searchClose.addEventListener('click', closeSearchDialog);
+  searchOverlay.addEventListener('click', function(e) {
+    if (e.target === searchOverlay) closeSearchDialog();
+  });
+
+  // Version filter in dialog
+  var dialogVersionFilter = 'all';
+  createVersionFilter({
+    wrapper: document.getElementById('search-version-filter'),
+    positionFixed: true,
+    onChange: function(value) {
+      dialogVersionFilter = value;
+      filterSearchResults();
     }
   });
-  
-  hiddenSelect.addEventListener('change', function() {
-    var selectedRelease = this.value;
-    var posts = document.getElementsByClassName('snapshot-post');
-    
-    for (var i = 0; i < posts.length; i++) {
-      var post = posts[i];
-      var postRelease = post.getAttribute('data-release');
-      
-      if (selectedRelease === 'all' || postRelease === selectedRelease) {
-        post.style.display = 'block';
+
+  function filterSearchResults() {
+    var results = document.querySelectorAll('#results-container li');
+    results.forEach(function(li) {
+      var release = li.getAttribute('data-release');
+      li.style.display = (dialogVersionFilter === 'all' || release === dialogVersionFilter) ? 'block' : 'none';
+    });
+  }
+
+  var resultsObserver = new MutationObserver(filterSearchResults);
+  resultsObserver.observe(document.getElementById('results-container'), { childList: true });
+
+  // Search
+  var highlightMiddleware = window.createHighlightTemplateMiddleware({
+    className: 'search-highlight',
+    maxLength: 200
+  });
+  function formatStage(stage) {
+    switch (stage) {
+      case "experiment":
+        return "Experimental Snapshot"
+      case "snapshot":
+        return "Snapshot"
+      case "pre-release":
+        return "Pre-Release"
+      case "release-candidate":
+        return "Release Candidate"
+      case "release":
+        return "Release"
+      case "april-fools":
+        return "April Fools' Snapshot"
+      default:
+        return "Unknown"
+    }
+  }
+
+  window.simpleJekyllSearch = new SimpleJekyllSearch({
+    searchInput: document.getElementById('search-input'),
+    resultsContainer: document.getElementById('results-container'),
+    json: '{{ "/assets/data/search.json" | relative_url }}',
+    searchResultTemplate: '<li data-release="{release}"><a href="{url}?query={query}">{title}</a><p><small>{release} - {stage}</small></p><p class="search-desc">{content}</p></li>',
+    templateMiddleware: function(prop, value, template, query, matchInfo) {
+      if (prop === 'stage') {
+        return formatStage(value);
       } else {
-        post.style.display = 'none';
+        return highlightMiddleware(prop, value, template, query, matchInfo);
       }
-    }
+    },
+    noResultsText: 'No results found',
+    limit: 50,
+    strategy: 'hybrid',
+    sortMiddleware: window.RelevanceSort,
   });
-})();
 </script>
