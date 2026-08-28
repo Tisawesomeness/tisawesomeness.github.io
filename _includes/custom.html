@@ -1,10 +1,12 @@
 {% comment %}
   Replace {::bug:PROJECT-ID} patterns with links to bugs.mojang.com
-  Usage: {% include bug_links.html html=content %}
+  Replace {::color:COLOR} patterns with a square of that color
+  Replace {::colordef:COLOR} patterns with a square of that color and the color's hex code in monospace
+  Usage: {% include custom.html html=content %}
 {% endcomment %}
 
 {% assign result = include.html %}
-{% assign parts = result | split: '{::bug:' %}
+{% assign parts = result | split: '{::' %}
 
 {% capture processed %}{% endcapture %}
 
@@ -13,21 +15,42 @@
     {% capture processed %}{{ processed }}{{ part }}{% endcapture %}
   {% else %}
     {% assign closing = part | split: '}' %}
-    {% assign bugId = closing | first %}
+    {% assign typeAndArg = closing | first %}
     {% assign rest = closing | last %}
-    
-    {% if bugId contains '-' %}
-      {% assign project = bugId | split: '-' | first %}
-      {% assign id = bugId | split: '-' | last %}
-      {% if project != '' and id != '' %}
-        {% capture link %}<a href="https://bugs.mojang.com/browse/{{ project }}/issues/{{ project }}-{{ id }}">{{ project }}-{{ id }}</a>{% endcapture %}
-        {% capture processed %}{{ processed }}{{ link }}{{ rest }}{% endcapture %}
+
+    {% assign splitByColon = typeAndArg | split: ':' %}
+    {% assign type = splitByColon | first %}
+    {% assign arg = typeAndArg | remove_first: type | remove_first: ":" %}
+
+    {% case type %}
+
+      {% when 'bug' %}
+        {% if arg contains '-' %}
+          {% assign project = arg | split: '-' | first %}
+          {% assign id = arg | split: '-' | last %}
+          {% if project != '' and id != '' %}
+            {% capture link %}<a href="https://bugs.mojang.com/browse/{{ project }}/issues/{{ project }}-{{ id }}">{{ project }}-{{ id }}</a>{% endcapture %}
+            {% capture processed %}{{ processed }}{{ link }}{{ rest }}{% endcapture %}
+          {% else %}
+            {% capture processed %}{{ processed }}{{ part }}{% endcapture %}
+          {% endif %}
+        {% else %}
+          {% capture processed %}{{ processed }}{{ part }}{% endcapture %}
+        {% endif %}
+
+      {% when 'color' %}
+        {% capture colorSpan %}<span class="color-preview" style="background-color: {{ arg }}"></span>{% endcapture %}
+        {% capture processed %}{{ processed }}{{ colorSpan }}{{ rest }}{% endcapture %}
+
+      {% when 'colordef' %}
+        {% capture colorSpan %}<span class="color-preview" style="background-color: {{ arg }}"></span> <code class="language-plaintext">{{ arg }}</code>{% endcapture %}
+        {% capture processed %}{{ processed }}{{ colorSpan }}{{ rest }}{% endcapture %}
+
       {% else %}
-        {% capture processed %}{{ processed }}{{ part }}{% endcapture %}
-      {% endif %}
-    {% else %}
-      {% capture processed %}{{ processed }}{{ part }}{% endcapture %}
-    {% endif %}
+        {% capture processed %}{{ processed }}{{ part }}{{ rest }}{% endcapture %}
+
+    {% endcase %}
+
   {% endif %}
 {% endfor %}
 
