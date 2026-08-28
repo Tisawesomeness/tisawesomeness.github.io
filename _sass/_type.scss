@@ -38,6 +38,10 @@ ul, ol, dl {
   margin-bottom: 1rem;
 }
 
+li > ul, li > ol, li > dl {
+  margin-bottom: 0rem;
+}
+
 dt {
   font-weight: bold;
 }
