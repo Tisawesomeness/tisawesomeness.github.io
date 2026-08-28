@@ -1,0 +1,34 @@
+{% comment %}
+  Replace {::bug:PROJECT-ID} patterns with links to bugs.mojang.com
+  Usage: {% include bug_links.html html=content %}
+{% endcomment %}
+
+{% assign result = include.html %}
+{% assign parts = result | split: '{::bug:' %}
+
+{% capture processed %}{% endcapture %}
+
+{% for part in parts %}
+  {% if forloop.first %}
+    {% capture processed %}{{ processed }}{{ part }}{% endcapture %}
+  {% else %}
+    {% assign closing = part | split: '}' %}
+    {% assign bugId = closing | first %}
+    {% assign rest = closing | last %}
+    
+    {% if bugId contains '-' %}
+      {% assign project = bugId | split: '-' | first %}
+      {% assign id = bugId | split: '-' | last %}
+      {% if project != '' and id != '' %}
+        {% capture link %}<a href="https://bugs.mojang.com/browse/{{ project }}/issues/{{ project }}-{{ id }}">{{ project }}-{{ id }}</a>{% endcapture %}
+        {% capture processed %}{{ processed }}{{ link }}{{ rest }}{% endcapture %}
+      {% else %}
+        {% capture processed %}{{ processed }}{{ part }}{% endcapture %}
+      {% endif %}
+    {% else %}
+      {% capture processed %}{{ processed }}{{ part }}{% endcapture %}
+    {% endif %}
+  {% endif %}
+{% endfor %}
+
+{{ processed }}
