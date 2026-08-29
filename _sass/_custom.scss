@@ -58,6 +58,24 @@ details:not([open]):focus, details:not([open]):hover {
   border-bottom: 2px solid rgba(255, 255, 100, 0.8);
 }
 
+// Two Column Layout
+
+.two-column {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+}
+
+.two-column > div {
+  flex: 1 1 300px;
+  min-width: 0;
+}
+
+.two-column > div > p {
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+}
+
 // Buttons
 
 .action-btn {
