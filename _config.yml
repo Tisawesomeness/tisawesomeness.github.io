@@ -43,6 +43,16 @@ sass:
 # Custom vars
 version: 3.0.0
 
+# Portal mapping for report.bugs.mojang.com
+# Maps project identifier to portal number
+portal:
+  MC: '2'
+  MCPE: '6'
+  MCL: '7'
+  REALMS: '9'
+  WEB: '10'
+  BDS: '4'
+
 # Navbar page list
 nav:
   - title: Snapshots

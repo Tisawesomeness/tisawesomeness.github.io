@@ -76,6 +76,60 @@ details:not([open]):focus, details:not([open]):hover {
   margin-bottom: 0.5rem;
 }
 
+// Bug Links
+
+.bug-link-container {
+  position: relative;
+  display: inline-block;
+}
+
+.bug-link {
+  color: var(--link-color);
+  text-decoration: none;
+  cursor: pointer;
+  border-bottom: 1px dotted currentColor;
+}
+
+.bug-link:hover {
+  color: var(--link-hover-color);
+}
+
+.bug-dropdown {
+  position: absolute;
+  left: 0;
+  top: 100%;
+  margin-top: 0.25rem;
+  z-index: 1000;
+  display: none;
+  background: var(--body-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 0.3rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+  min-width: max-content;
+  padding: 0.25rem;
+}
+
+.bug-dropdown-link {
+  display: block;
+  width: 100%;
+  padding: 0.5rem 1rem;
+  background: none;
+  border: none;
+  color: var(--body-color);
+  font-size: inherit;
+  font-family: inherit;
+  text-align: left;
+  cursor: pointer;
+  white-space: nowrap;
+  text-align: left;
+}
+
+.bug-dropdown-link:hover,
+.bug-dropdown-link:focus {
+  background: var(--gray-700);
+  outline: none;
+}
+
 // Buttons
 
 .action-btn {

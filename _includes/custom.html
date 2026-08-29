@@ -33,7 +33,7 @@
           {% assign project = projectId | split: '-' | first %}
           {% assign id = projectId | split: '-' | last %}
           {% if label != '' and project != '' and id != '' %}
-            {% capture link %}<a href="https://bugs.mojang.com/browse/{{ project }}/issues/{{ project }}-{{ id }}">{{ label }}</a>{% endcapture %}
+            {% capture link %}{% include bug.html %}{% endcapture %}
             {% capture processed %}{{ processed }}{{ link }}{{ rest }}{% endcapture %}
           {% else %}
             {% capture processed %}{{ processed }}{{ part }}{% endcapture %}

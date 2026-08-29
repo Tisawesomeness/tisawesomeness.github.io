@@ -1,0 +1,28 @@
+<span class="bug-link-container">
+  <a class="bug-link" href="https://bugs.mojang.com/browse/{{ project }}/issues/{{ id }}" aria-haspopup="true" aria-expanded="false" aria-controls="bug-dropdown-{{ project }}-{{ id }}">
+    {{ label }}
+  </a>
+  <span class="bug-dropdown" id="bug-dropdown-{{ project }}-{{ id }}" role="listbox" style="display: none;">
+    <a class="bug-dropdown-link" role="option" href="https://mojira.dev/{{ project }}-{{ id }}" target="_blank" rel="noopener">
+      mojira.dev
+    </a>
+    <a class="bug-dropdown-link" role="option" href="https://mojira-viewer.jacobsjo.eu/browse/{{ project }}-{{ id }}" target="_blank" rel="noopener">
+      mojira-viewer.jacobsjo.eu
+    </a>
+    <a class="bug-dropdown-link" role="option" href="https://bugs.mojang.com/browse/{{ project }}/issues/{{ id }}" target="_blank" rel="noopener">
+      bugs.mojang.com
+    </a>
+    {% assign portal_id = site.portal[project] %}
+    {% if portal_id %}
+    <a class="bug-dropdown-link" role="option" href="https://report.bugs.mojang.com/servicedesk/customer/portal/{{ site.portal[project] }}/{{ project }}-{{ id }}" target="_blank" rel="noopener">
+      report.bugs.mojang.com
+    </a>
+    {% endif %}
+    <a class="bug-dropdown-link" role="option" href="https://bugs-legacy.mojang.com/browse/{{ project }}-{{ id }}" target="_blank" rel="noopener">
+      bugs-legacy.mojang.com
+    </a>
+    <a class="bug-dropdown-link" role="option" href="https://mojira.atlassian.net/browse/{{ project }}-{{ id }}" target="_blank" rel="noopener">
+      mojira.atlassian.net
+    </a>
+  </span>
+</span>
