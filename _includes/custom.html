@@ -1,5 +1,6 @@
 {% comment %}
   Replace {::bug:PROJECT-ID} patterns with links to bugs.mojang.com
+  Replace {::bug:LABEL:PROJECT-ID} patterns with links using LABEL as the link text
   Replace {::color:COLOR} patterns with a square of that color
   Replace {::colordef:COLOR} patterns with a square of that color and the color's hex code in monospace
   Usage: {% include custom.html html=content %}
@@ -16,20 +17,23 @@
   {% else %}
     {% assign closing = part | split: '}' %}
     {% assign typeAndArg = closing | first %}
-    {% assign rest = closing | last %}
+    {% assign rest = part | remove_first: typeAndArg | remove_first: '}' %}
 
     {% assign splitByColon = typeAndArg | split: ':' %}
     {% assign type = splitByColon | first %}
-    {% assign arg = typeAndArg | remove_first: type | remove_first: ":" %}
+    {% assign arg = typeAndArg | remove_first: type | remove_first: ':' %}
 
     {% case type %}
 
       {% when 'bug' %}
-        {% if arg contains '-' %}
-          {% assign project = arg | split: '-' | first %}
-          {% assign id = arg | split: '-' | last %}
-          {% if project != '' and id != '' %}
-            {% capture link %}<a href="https://bugs.mojang.com/browse/{{ project }}/issues/{{ project }}-{{ id }}">{{ project }}-{{ id }}</a>{% endcapture %}
+        {% assign argParts = arg | split: ':' %}
+        {% assign label = argParts | first %}
+        {% assign projectId = argParts | last %}
+        {% if projectId contains '-' %}
+          {% assign project = projectId | split: '-' | first %}
+          {% assign id = projectId | split: '-' | last %}
+          {% if label != '' and project != '' and id != '' %}
+            {% capture link %}<a href="https://bugs.mojang.com/browse/{{ project }}/issues/{{ project }}-{{ id }}">{{ label }}</a>{% endcapture %}
             {% capture processed %}{{ processed }}{{ link }}{{ rest }}{% endcapture %}
           {% else %}
             {% capture processed %}{{ processed }}{{ part }}{% endcapture %}
