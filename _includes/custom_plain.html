@@ -1,0 +1,60 @@
+{% comment %}
+  Like custom.html, but replaces all patterns with a plain-text variant, useful for search results
+  Usage: {% include custom_plain.html html=content %}
+{% endcomment %}
+
+{% assign result = include.html %}
+{% assign parts = result | split: '{::' %}
+
+{% capture processed %}{% endcapture %}
+
+{% for part in parts %}
+  {% if forloop.first %}
+    {% capture processed %}{{ processed }}{{ part }}{% endcapture %}
+  {% else %}
+    {% assign closing = part | split: '}' %}
+    {% assign typeAndArg = closing | first %}
+    {% assign rest = part | remove_first: typeAndArg | remove_first: '}' %}
+
+    {% assign splitByColon = typeAndArg | split: ':' %}
+    {% assign type = splitByColon | first %}
+    {% assign arg = typeAndArg | remove_first: type | remove_first: ':' %}
+
+    {% case type %}
+
+      {% when 'bug' %}
+        {% assign argParts = arg | split: ':' %}
+        {% assign label = argParts | first %}
+        {% assign projectId = argParts | last %}
+        {% if projectId contains '-' %}
+          {% assign project = projectId | split: '-' | first %}
+          {% assign id = projectId | split: '-' | last %}
+          {% if label != '' and project != '' and id != '' %}
+            {% if label == projectId %}
+              {% capture link %}{{ label }}{% endcapture %}
+            {% else %}
+              {% capture link %}{{ label }} {{ project }}-{{ id }}{% endcapture %}
+            {% endif %}
+            {% capture processed %}{{ processed }}{{ link }}{{ rest }}{% endcapture %}
+          {% else %}
+            {% capture processed %}{{ processed }}{{ part }}{% endcapture %}
+          {% endif %}
+        {% else %}
+          {% capture processed %}{{ processed }}{{ part }}{% endcapture %}
+        {% endif %}
+
+      {% when 'color' %}
+        {% capture processed %}{{ processed }}{{ arg }}{{ rest }}{% endcapture %}
+
+      {% when 'colordef' %}
+        {% capture processed %}{{ processed }}{{ arg }}{{ rest }}{% endcapture %}
+
+      {% else %}
+        {% capture processed %}{{ processed }}{{ part }}{{ rest }}{% endcapture %}
+
+    {% endcase %}
+
+  {% endif %}
+{% endfor %}
+
+{{ processed }}
