@@ -1,0 +1,126 @@
+---
+layout: default
+title: "Maze Generator"
+---
+
+<head>
+  <link rel="stylesheet" href="{{ 'assets/css/maze.css' | relative_url }}">
+</head>
+
+<h1>Maze Generator Tool (prototype)</h1>
+
+<div class="maze-controls">
+  <div class="parameters-row">
+    <div class="parameters">
+      <label>
+        <span class="tooltip-label" data-tooltip="Maze width (in paths)">Width:</span>
+        <input type="range" class="parameter-slider" id="mazeWidth" value="10" min="1" max="100" />
+        <span id="widthValue">10</span>
+      </label>
+      <label>
+        <span class="tooltip-label" data-tooltip="Maze height (in paths)">Height:</span>
+        <input type="range" class="parameter-slider" id="mazeHeight" value="10" min="1" max="100" />
+        <span id="heightValue">10</span>
+      </label>
+      <label>
+        <span class="tooltip-label" data-tooltip="Number of walls broken on each region border">Breaches:</span>
+        <input type="range" class="breaches-slider" id="breachesInput" value="1" min="0" max="10" />
+        <span id="breachesValue">1</span>
+      </label>
+      <p>
+        Click on any cell to create a POI
+      </p>
+    </div>
+
+    <div class="probabilities-section">
+      <div class="probability-control">
+        <span class="probability-label"><span class="tooltip-label" data-tooltip="Biased towards most recently explored cells. Tends to generate long, winding passageways.">Newest:</span></span>
+        <div class="slider-container">
+          <input type="range" id="probNewest" value="75" min="0" max="100" step="1" />
+        </div>
+        <span class="probability-value" id="probNewestValue">75</span>
+      </div>
+
+      <div class="probability-control">
+        <span class="probability-label"><span class="tooltip-label" data-tooltip="Bias towards random cells. Tends to generate many offshoots.">Random:</span></span>
+        <div class="slider-container">
+          <input type="range" id="probRandom" value="25" min="0" max="100" step="1" />
+        </div>
+        <span class="probability-value" id="probRandomValue">25</span>
+      </div>
+
+      <div class="probability-control">
+        <span class="probability-label"><span class="tooltip-label" data-tooltip="Bias toward the least recently explored cells. Tends to spread out the maze quickly.">Oldest:</span></span>
+        <div class="slider-container">
+          <input type="range" id="probOldest" value="0" min="0" max="100" step="1" />
+        </div>
+        <span class="probability-value" id="probOldestValue">0</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="generate-section">
+    <button id="stepMaze">Step</button>
+    <button id="runPauseMaze">Run</button>
+    <label style="display: flex; align-items: center; gap: 0.5rem">
+      <input type="checkbox" id="solveCheckbox" />
+      <span class="tooltip-label" data-tooltip="Show the maze solution">Solve</span>
+    </label>
+    <label style="display: flex; align-items: center; gap: 0.5rem">
+      <input type="checkbox" id="animateCheckbox" checked />
+      <span class="tooltip-label" data-tooltip="Animate maze generation">Animate</span>
+    </label>
+    <label>
+      <span class="tooltip-label" data-tooltip="Animation speed">Speed:</span>
+      <input type="range" id="animationSpeed" value="2" min="1" max="11" step="1" />
+      <span id="speedValue">2</span>
+    </label>
+    <button id="resetMaze" style="margin-left: auto">Reset</button>
+  </div>
+</div>
+
+<div id="mazeGrid" class="maze-grid"></div>
+
+<div class="maze-export">
+  <div class="export-columns">
+    <div>
+      <div class="dimensions">
+        <span id="dimensionsText" class="dimensions-text">Dimensions: 21 x 21 blocks</span>
+      </div>
+      <div class="export-column">
+        <label style="display: flex; align-items: center; gap: 0.5rem">
+          <span class="tooltip-label" data-tooltip="Width of maze paths, in blocks">Path Width:</span>
+          <input type="range" class="export-slider" id="pathWidth" value="1" min="1" max="5" />
+          <span id="pathWidthValue">1</span>
+        </label>
+        <label style="display: flex; align-items: center; gap: 0.5rem">
+          <span class="tooltip-label" data-tooltip="Width of maze walls, in blocks">Wall Width:</span>
+          <input type="range" class="export-slider" id="wallWidth" value="1" min="1" max="5" />
+          <span id="wallWidthValue">1</span>
+        </label>
+        <label style="display: flex; align-items: center; gap: 0.5rem">
+          <span class="tooltip-label" data-tooltip="Height of maze walls, in blocks">Wall Height:</span>
+          <input type="range" class="export-slider" id="wallHeight" value="1" min="1" max="20" />
+          <span id="wallHeightValue">1</span>
+        </label>
+        <label style="display: flex; align-items: center; gap: 0.5rem">
+          <span class="tooltip-label" data-tooltip="Wall block (ex: minecraft:spruce_leaves)">Wall Block:</span>
+          <input type="text" id="wallBlock" value="minecraft:spruce_leaves[persistent=true]" />
+        </label>
+      </div>
+    </div>
+    <div class="export-column">
+      <label style="display: flex; align-items: center; gap: 0.5rem; justify-content: center">
+        <button id="exportMaze" disabled>Datapack Export</button>
+        <input type="checkbox" id="replaceCheckbox" checked />
+        <span class="tooltip-label" data-tooltip="Replace existing blocks">Replace</span>
+      </label>
+      <textarea id="exportOutput" disabled ></textarea>
+      <div style="display: flex; justify-content: center">
+        <button id="downloadButton" disabled>Download</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="{{ 'assets/js/maze.js' | relative_url }}"></script>
