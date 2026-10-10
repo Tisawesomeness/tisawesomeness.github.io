@@ -12,7 +12,7 @@
 <div class="version-filter-dropdown" role="listbox" aria-label="Filter by version">
   <div class="version-filter-options" role="presentation">
     <button class="version-filter-option" role="option" data-value="all" aria-selected="true">All</button>
-    {% assign releases = site.categories["snapshots"] | where_exp: "post", "post.release" | group_by: "release" | sort: 'name' | reverse %}
+    {% assign releases = site.categories["snapshots"] | where_exp: "post", "post.release" | group_by: "release" %}
     {% for group in releases %}
       <button class="version-filter-option" role="option" data-value="{{ group.name }}" aria-selected="false">{{ group.name }}</button>
     {% endfor %}
