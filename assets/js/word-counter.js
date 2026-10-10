@@ -26,7 +26,7 @@ function loadState() {
     const container = document.getElementById('sources-container');
     container.innerHTML = '';
     
-    state.forEach((source, index) => {
+    state.forEach((source) => {
       const sourceDiv = document.createElement('div');
       sourceDiv.className = 'source-input';
       sourceDiv.innerHTML = `
@@ -76,7 +76,7 @@ function countWords() {
   const sources = document.querySelectorAll('.source-input');
   const wordCounts = {};
   
-  sources.forEach((source, index) => {
+  sources.forEach((source) => {
     const input = source.querySelector('input');
     const sourceName = input.value.trim();
     const textarea = source.querySelector('textarea');
@@ -334,19 +334,17 @@ function lengthCountingBracketsAsOneCharacter(str) {
   return count;
 }
 
-document.addEventListener('input', function(e) {
+document.addEventListener('input', (e) => {
   if (e.target.classList.contains('source-name') || e.target.tagName === 'TEXTAREA') {
     saveState();
   }
 });
 
-document.addEventListener('DOMContentLoaded', function() {
-  loadState();
-});
+document.addEventListener('DOMContentLoaded', loadState);
 
-document.addEventListener('keydown', function(e) {
+document.addEventListener('keydown', (e) => {
   if (e.ctrlKey || e.metaKey) {
-    switch(e.key) {
+    switch (e.key) {
       case 'Enter':
         e.preventDefault();
         countWords();
