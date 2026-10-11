@@ -31,6 +31,7 @@ plugins:
 exclude:
   - .editorconfig
   - .git
+  - .github
   - .jekyll-cache
   - .jektex-cache
   - Gemfile
