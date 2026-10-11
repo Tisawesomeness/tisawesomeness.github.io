@@ -5,4 +5,4 @@ gem "github-pages"
 gem "jekyll-gist"
 gem "jekyll-paginate"
 gem "jekyll-seo-tag"
-
+gem "jektex"

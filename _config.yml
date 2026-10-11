@@ -25,12 +25,14 @@ plugins:
   - jekyll-paginate
   - jekyll-seo-tag
   - kramdown
+  - jektex
 
 # Optimize Jekyll
 exclude:
   - .editorconfig
   - .git
   - .jekyll-cache
+  - .jektex-cache
   - Gemfile
   - Gemfile.lock
   - LICENSE.md
@@ -69,3 +71,16 @@ feed_items: 10
 feed_update_period: hourly
 feed_update_frequency: 1
 
+jektex:
+  cache_dir: ".jektex-cache"
+  ignore:
+    - "README.md"
+    - "LICENSE.md"
+    - "*.xml"
+    - "*.json"
+  silent: false
+  katex_options:
+    trust: false
+  macros:
+    - ["\\Q", "\\mathbb{Q}"]
+    - ["\\C", "\\mathbb{C}"]
