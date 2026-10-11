@@ -38,6 +38,7 @@ exclude:
   - Gemfile.lock
   - LICENSE.md
   - README.md
+  - vendor
 
 sass:
   sass_dir: _sass
