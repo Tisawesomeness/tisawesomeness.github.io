@@ -49,6 +49,12 @@
       {% when 'colordef' %}
         {% capture processed %}{{ processed }}{{ arg }}{{ rest }}{% endcapture %}
 
+      {% when 'hint' %}
+        {% assign argParts = arg | split: ':' %}
+        {% assign text = argParts | first %}
+        {% assign hint = argParts | last %}
+        {% capture processed %}{{ processed }}{{ text }} {{ hint }}{{ rest }}{% endcapture %}
+
       {% else %}
         {% capture processed %}{{ processed }}{{ part }}{{ rest }}{% endcapture %}
 

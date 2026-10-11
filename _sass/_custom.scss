@@ -52,6 +52,49 @@ details:not([open]):focus, details:not([open]):hover {
   margin-right: -0.1em;
 }
 
+// Tooltips
+
+.tooltip-label {
+  position: relative;
+  display: inline-block;
+  cursor: help;
+  border-bottom: 1px dotted #666;
+}
+
+.tooltip-label[data-tooltip]::after {
+  content: attr(data-tooltip);
+}
+
+.tooltip-label[data-tooltip]::after,
+.tooltip-label .tooltip-text {
+  position: absolute;
+  left: 50%;
+  bottom: 125%;
+  transform: translateX(-50%);
+  background: #333;
+  color: white;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s;
+  z-index: 100;
+}
+
+.tooltip-label[data-tooltip]:hover::after,
+.tooltip-label[data-tooltip]:focus::after,
+.tooltip-label:hover .tooltip-text,
+.tooltip-label:focus .tooltip-text {
+  opacity: 1;
+}
+
+.tooltip-label[data-tooltip]:focus-visible,
+.tooltip-label .tooltip-text:focus-visible {
+  outline: 2px solid #0066cc;
+}
+
 // Highlight
 
 .highlighted {

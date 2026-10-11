@@ -3,6 +3,7 @@
   Replace {::bug:LABEL:PROJECT-ID} patterns with links using LABEL as the link text
   Replace {::color:COLOR} patterns with a square of that color
   Replace {::colordef:COLOR} patterns with a square of that color and the color's hex code in monospace
+  Replace {::hint:TEXT:HINT} patterns with a tooltip showing HINT on hover over TEXT
   Usage: {% include custom.html html=content %}
 {% endcomment %}
 
@@ -49,6 +50,13 @@
       {% when 'colordef' %}
         {% capture colorSpan %}<span class="color-preview" style="background-color: {{ arg }}"></span> <code class="language-plaintext">{{ arg }}</code>{% endcapture %}
         {% capture processed %}{{ processed }}{{ colorSpan }}{{ rest }}{% endcapture %}
+
+      {% when 'hint' %}
+        {% assign argParts = arg | split: ':' %}
+        {% assign text = argParts | first %}
+        {% assign hint = argParts | last %}
+        {% capture hintSpan %}<span class="tooltip-label"><span class="tooltip-text">{{ hint }}</span>{{ text }}</span>{% endcapture %}
+        {% capture processed %}{{ processed }}{{ hintSpan }}{{ rest }}{% endcapture %}
 
       {% else %}
         {% capture processed %}{{ processed }}{{ part }}{{ rest }}{% endcapture %}
