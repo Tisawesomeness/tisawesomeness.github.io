@@ -20,6 +20,14 @@
     {% assign typeAndArg = closing | first %}
     {% assign rest = part | remove_first: typeAndArg | remove_first: '}' %}
 
+    {% assign char = rest | slice: 0 %}
+    {% if ".,:;-" contains char %}
+      {% assign punctuation = char %}
+      {% assign rest = rest | remove_first: char %}
+    {% else %}
+      {% assign punctuation = "" %}
+    {% endif %}
+
     {% assign splitByColon = typeAndArg | split: ':' %}
     {% assign type = splitByColon | first %}
     {% assign arg = typeAndArg | remove_first: type | remove_first: ':' %}
@@ -34,34 +42,36 @@
           {% assign project = projectId | split: '-' | first %}
           {% assign id = projectId | split: '-' | last %}
           {% if label != '' and project != '' and id != '' %}
-            {% capture link %}{% include bug.liquid %}{% endcapture %}
-            {% capture processed %}{{ processed }}{{ link }}{{ rest }}{% endcapture %}
+            {% capture output %}{% include bug.liquid %}{% endcapture %}
           {% else %}
-            {% capture processed %}{{ processed }}{{ part }}{% endcapture %}
+            {% assign output = part %}
           {% endif %}
         {% else %}
-          {% capture processed %}{{ processed }}{{ part }}{% endcapture %}
+          {% assign output = part %}
         {% endif %}
 
       {% when 'color' %}
-        {% capture colorSpan %}<span class="color-preview" style="background-color: {{ arg }}"></span>{% endcapture %}
-        {% capture processed %}{{ processed }}{{ colorSpan }}{{ rest }}{% endcapture %}
+        {% capture output %}<span class="color-preview" style="background-color: {{ arg }}"></span>{% endcapture %}
 
       {% when 'colordef' %}
-        {% capture colorSpan %}<span class="color-preview" style="background-color: {{ arg }}"></span> <code class="language-plaintext">{{ arg }}</code>{% endcapture %}
-        {% capture processed %}{{ processed }}{{ colorSpan }}{{ rest }}{% endcapture %}
+        {% capture output %}<span class="color-preview" style="background-color: {{ arg }}"></span> <code class="language-plaintext">{{ arg }}</code>{% endcapture %}
 
       {% when 'hint' %}
         {% assign argParts = arg | split: ':' %}
         {% assign text = argParts | first %}
         {% assign hint = argParts | last %}
-        {% capture hintSpan %}<span class="tooltip-label"><span class="tooltip-text">{{ hint }}</span>{{ text }}</span>{% endcapture %}
-        {% capture processed %}{{ processed }}{{ hintSpan }}{{ rest }}{% endcapture %}
+        {% capture output %}<span class="tooltip-label"><span class="tooltip-text">{{ hint }}</span>{{ text }}</span>{% endcapture %}
 
       {% else %}
-        {% capture processed %}{{ processed }}{{ part }}{{ rest }}{% endcapture %}
+        {% assign output = part %}
 
     {% endcase %}
+
+    {% if punctuation == "" %}
+      {% capture processed %}{{ processed }}{{ output }}{{ rest }}{% endcapture %}
+    {% else %}
+      {% capture processed %}{{ processed }}<span style="display: inline-block;">{{ output }}{{ punctuation }}</span>{{ rest }}{% endcapture %}
+    {% endif %}
 
   {% endif %}
 {% endfor %}
