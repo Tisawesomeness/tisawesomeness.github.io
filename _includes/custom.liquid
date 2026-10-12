@@ -1,6 +1,10 @@
 {% comment %}
-  Like custom.html, but replaces all patterns with a plain-text variant, useful for search results
-  Usage: {% include custom_plain.html html=content %}
+  Replace {::bug:PROJECT-ID} patterns with links to bugs.mojang.com
+  Replace {::bug:LABEL:PROJECT-ID} patterns with links using LABEL as the link text
+  Replace {::color:COLOR} patterns with a square of that color
+  Replace {::colordef:COLOR} patterns with a square of that color and the color's hex code in monospace
+  Replace {::hint:TEXT:HINT} patterns with a tooltip showing HINT on hover over TEXT
+  Usage: {% include custom.liquid html=content %}
 {% endcomment %}
 
 {% assign result = include.html %}
@@ -30,11 +34,7 @@
           {% assign project = projectId | split: '-' | first %}
           {% assign id = projectId | split: '-' | last %}
           {% if label != '' and project != '' and id != '' %}
-            {% if label == projectId %}
-              {% capture link %}{{ label }}{% endcapture %}
-            {% else %}
-              {% capture link %}{{ label }} {{ project }}-{{ id }}{% endcapture %}
-            {% endif %}
+            {% capture link %}{% include bug.liquid %}{% endcapture %}
             {% capture processed %}{{ processed }}{{ link }}{{ rest }}{% endcapture %}
           {% else %}
             {% capture processed %}{{ processed }}{{ part }}{% endcapture %}
@@ -44,16 +44,19 @@
         {% endif %}
 
       {% when 'color' %}
-        {% capture processed %}{{ processed }}{{ arg }}{{ rest }}{% endcapture %}
+        {% capture colorSpan %}<span class="color-preview" style="background-color: {{ arg }}"></span>{% endcapture %}
+        {% capture processed %}{{ processed }}{{ colorSpan }}{{ rest }}{% endcapture %}
 
       {% when 'colordef' %}
-        {% capture processed %}{{ processed }}{{ arg }}{{ rest }}{% endcapture %}
+        {% capture colorSpan %}<span class="color-preview" style="background-color: {{ arg }}"></span> <code class="language-plaintext">{{ arg }}</code>{% endcapture %}
+        {% capture processed %}{{ processed }}{{ colorSpan }}{{ rest }}{% endcapture %}
 
       {% when 'hint' %}
         {% assign argParts = arg | split: ':' %}
         {% assign text = argParts | first %}
         {% assign hint = argParts | last %}
-        {% capture processed %}{{ processed }}{{ text }} {{ hint }}{{ rest }}{% endcapture %}
+        {% capture hintSpan %}<span class="tooltip-label"><span class="tooltip-text">{{ hint }}</span>{{ text }}</span>{% endcapture %}
+        {% capture processed %}{{ processed }}{{ hintSpan }}{{ rest }}{% endcapture %}
 
       {% else %}
         {% capture processed %}{{ processed }}{{ part }}{{ rest }}{% endcapture %}

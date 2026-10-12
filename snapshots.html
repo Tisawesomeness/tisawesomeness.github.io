@@ -45,7 +45,7 @@ title: "Minecraft Snapshot Reverse Engineering"
 
   <div class="snapshot-wrapper">
     <div id="version-filter" style="display: inline-block">
-      {% include version_filter.html %}
+      {% include version_filter.liquid %}
     </div>
 
     <button class="action-btn" id="search-btn" aria-haspopup="dialog" aria-expanded="false" aria-controls="search-dialog" title="Search">
@@ -88,7 +88,7 @@ title: "Minecraft Snapshot Reverse Engineering"
       <div class="search-input-row">
         <input type="search" id="search-input" placeholder="Search...">
         <div class="search-version-filter" id="search-version-filter">
-          {% include version_filter.html %}
+          {% include version_filter.liquid %}
         </div>
       </div>
       <ul id="results-container"></ul>

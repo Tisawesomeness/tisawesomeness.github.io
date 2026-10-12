@@ -3,7 +3,7 @@ layout: none
 ---
 [
   {% for post in site.categories["snapshots"] %}
-    {% capture processed_content %}{% include custom_plain.html html=post.content %}{% endcapture %}
+    {% capture processed_content %}{% include custom_plain.liquid html=post.content %}{% endcapture %}
     {
       "title"    : "{{ post.title | escape }}",
       "category" : "{{ post.category }}",
