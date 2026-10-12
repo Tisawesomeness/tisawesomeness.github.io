@@ -3,6 +3,7 @@
   <head>
     {% include_cached head.liquid %}
 
+    {% seo title=false %}
     <title>
       {% if page.title == "Home" %}
         {{ site.title }}{% if site.tagline %} &middot; {{ site.tagline }}{% endif %}
