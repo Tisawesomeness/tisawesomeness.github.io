@@ -21,12 +21,12 @@ social:
 
 # Gems
 plugins:
+  - jektex
   - jekyll-gist
   - jekyll-paginate
   - jekyll-seo-tag
   - jekyll-sitemap
   - kramdown
-  - jektex
 
 # Optimize Jekyll
 exclude:
