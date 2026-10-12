@@ -1,6 +1,16 @@
 <!DOCTYPE html>
 <html lang="en" data-theme="dark-poole">
-  {% include head.liquid %}
+  <head>
+    {% include_cached head.liquid %}
+
+    <title>
+      {% if page.title == "Home" %}
+        {{ site.title }}{% if site.tagline %} &middot; {{ site.tagline }}{% endif %}
+      {% else %}
+        {{ page.title }} &middot; {{ site.title }}
+      {% endif %}
+    </title>
+  </head>
 
   <body>
     <div class="container content">

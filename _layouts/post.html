@@ -30,7 +30,6 @@ layout: default
     <summary>Table of Contents</summary>
     {% include toc.liquid html=content %}
   </details>
-  {% capture actual_content %}{{ content | remove: page.excerpt }}{% endcapture %}
   {% capture processed_content %}{% include custom.liquid html=actual_content %}{% endcapture %}
   {% capture processed_content %}{% include fancy-tables.liquid html=processed_content %}{% endcapture %}
   <!-- https://github.com/allejo/jekyll-anchor-headings/wiki/Examples#github-style-octicon-links -->
@@ -39,24 +38,8 @@ layout: default
 
 <aside>
 {% if page.categories %}
-  {% comment %} https://github.com/jekyll/jekyll/issues/260 {% endcomment %}
-  {% assign category = page.categories[0] %}
-  {% assign posts = site.categories[category] %}
-  {% for post in posts %}
-    {% if post.url == page.url %}
-      {% assign post_index0 = forloop.index0 %}
-      {% assign post_index1 = forloop.index %}
-    {% endif %}
-  {% endfor %}
-  {% for post in posts %}
-    {% if post_index0 == forloop.index %}
-      {% assign next_post = post %}
-    {% endif %}
-    {% if post_index1 == forloop.index0 %}
-      {% assign prev_post = post %}
-    {% endif %}
-  {% endfor %}
-  
+  {% assign prev_post = page.previous_in_category %}
+  {% assign next_post = page.next_in_category %}
   {% if prev_post or next_post %}
     <div class="row">
       <div class="column">
@@ -84,5 +67,4 @@ layout: default
 {% endif %}
 </aside>
 
-<script src="{{ '/assets/js/anchor-headings.js' | relative_url }}"></script>
-<script src="{{ '/assets/js/bug.js' | relative_url }}"></script>
+{% include_cached post_scripts.liquid %}

@@ -23,6 +23,7 @@ social:
 plugins:
   - jektex
   - jekyll-gist
+  - jekyll-include-cache
   - jekyll-paginate
   - jekyll-seo-tag
   - jekyll-sitemap
