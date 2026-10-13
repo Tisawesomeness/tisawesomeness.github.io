@@ -9,7 +9,7 @@ stage: april-fools
 
 This snapshot may be a joke, but the automation and speedrunning potential is not!
 
-# Advanced Yeet Techniques
+## Advanced Yeet Techniques
 
 Yeet a block upwards and let it land on your head to put that block on your head.
 
@@ -35,7 +35,7 @@ Holding a spider will let the player climb walls.
 
 Holding a mob that throws projectiles will make that mob shoot in the direction you are looking.
 
-# Automation
+## Automation
 
 Bedrock and end portal frames now drop themselves when mined.
 
@@ -45,13 +45,13 @@ Endermen can spawn with any block. By any block, I mean **ANY** block, including
 
 Minecarts can carry blocks now.
 
-# Villagers
+## Villagers
 
 Villagers can no longer gossip.
 
 Villagers now prefer emerald ore as currency and can give you entities (including creepers) as trades.
 
-# billyballong
+## billyballong
 
 Naming an iron golem "billyballong" will make the iron golem offer a flower to players with the following usernames (case-insensitive):
 
@@ -61,19 +61,19 @@ Naming an iron golem "billyballong" will make the iron golem offer a flower to p
 - hidetaka
 - miyazaki
 
-# The End
+## The End
 
 End portal frames will generate in nether fortress chests and point towards the nearest stronghold when placed.
 
 If you destroy all end crystals then punch the dragon, **you can ride the ender dragon.** Fly below `y=-32` to teleport to the top of the overworld.
 
-# nothing to see here move along
+## nothing to see here move along
 
 The game has an intro jingle at `nothingtoseeheremovealong:awesome_intro` that sounds **sus**piciously like the SEGA jingle.
 
 The `nothingtoseeheremovealong:ooof` sound plays when a mob steals an item from you or an enderman trades its held block with you by attacking you.
 
-# Other
+## Other
 
 Wolves named "Mars" have a unique texture.
 
@@ -91,9 +91,9 @@ All splash texts were replaced with variations of "One block at a time!".
 
 Update suppression added back (just kidding).
 
-# Edits
+## Edits
 
-## April 1 2022
+### April 1 2022
 
 - Various changes
 
