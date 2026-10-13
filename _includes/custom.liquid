@@ -20,12 +20,16 @@
     {% assign typeAndArg = closing | first %}
     {% assign rest = part | remove_first: typeAndArg | remove_first: '}' %}
 
+    {% assign punctuation = "" %}
     {% assign char = rest | slice: 0 %}
-    {% if ".,:;-" contains char %}
+    {% if char == ")" %}
       {% assign punctuation = char %}
       {% assign rest = rest | remove_first: char %}
-    {% else %}
-      {% assign punctuation = "" %}
+      {% assign char = rest | slice: 0 %}
+    {% endif %}
+    {% if ".,:;-" contains char %}
+      {% capture punctuation %}{{ punctuation }}{{ char }}{% endcapture %}
+      {% assign rest = rest | remove_first: char %}
     {% endif %}
 
     {% assign splitByColon = typeAndArg | split: ':' %}
