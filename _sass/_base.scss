@@ -41,10 +41,19 @@ img {
 
 table {
   margin-bottom: 1rem;
-  width: 100%;
   border: 1px solid var(--gray-700);
   border-collapse: collapse;
   background-color: var(--gray-900);
+}
+
+.table-wrapper {
+  overflow-x: auto;
+  width: 100%;
+
+  table {
+    width: max-content;
+    min-width: 100%;
+  }
 }
 
 td,
