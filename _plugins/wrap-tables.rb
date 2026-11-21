@@ -1,4 +1,4 @@
-# Wrapps all table elements in a <div class="table-wrapper">
+# Wraps all table elements in a <div class="table-wrapper">
 # (required to fix table CSS on mobile)
 
 # frozen_string_literal: true
