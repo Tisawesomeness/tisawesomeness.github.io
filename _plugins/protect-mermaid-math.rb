@@ -31,7 +31,7 @@ module Jekyll
       @protected_math ||= {}
       content.gsub(/#{Regexp.escape(PROTECTION_TOKEN)}[a-f0-9]{16}/) do |token|
         math_body = @protected_math[token]
-        math_body ? "$$\\:#{math_body}\\:$$" : token
+        math_body ? "$$\\\\:#{math_body}\\\\:$$" : token
       end
     end
   end
